@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 9a0791ead468467488f0ceccae77a962
+guid: a00366bd971647447adc967cd181f626
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6472780771882023116
-    second: portal_sprite_0
+      213: 7908428629580456666
+    second: power_box_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: portal_sprite_0
+      name: power_box_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4374ef6ae201c26a0800000000000000
-      internalID: -6472780771882023116
+      spriteID: ad22cad10f160cd60800000000000000
+      internalID: 7908428629580456666
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      portal_sprite_0: -6472780771882023116
+      power_box_0: 7908428629580456666
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

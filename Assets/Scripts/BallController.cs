@@ -20,6 +20,7 @@ public class BallController : MonoBehaviour
     // Component References
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
+    public PlayerController lastPlayerHit { get; private set; }
     [Header("Sounds")]
     [SerializeField] private AudioSource pointSound;
     [SerializeField] private AudioSource bounceSound;
@@ -67,18 +68,32 @@ public class BallController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        direction = Vector2.Reflect(direction, collision.GetContact(0).normal);
-
         if (collision.gameObject.CompareTag("Paddle"))
         {
-            if (speed < maxSpeed) speed += onCollisionSpeedAdd;
+            float hitPoint = transform.position.y - collision.transform.position.y;
+            float paddleHeight = collision.collider.bounds.size.y;
+            float normalizedHitPoint = hitPoint / (paddleHeight / 2);
 
-            SpriteRenderer paddleRenderer = collision.gameObject.GetComponentInChildren<SpriteRenderer>();
+            direction = new Vector2(
+                direction.x > 0 ? -1 : 1,
+                normalizedHitPoint
+            ).normalized;
 
-            if (paddleRenderer != null) {
-                spriteRenderer.color = paddleRenderer.color;
+            if (speed < maxSpeed)
+                speed += onCollisionSpeedAdd;
+
+            PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
+            if (playerController != null)
+            {
+                spriteRenderer.color = playerController.GetColor();
+
+                lastPlayerHit = playerController;
             }
-
+                
+        }
+        else
+        {
+            direction = Vector2.Reflect(direction, collision.GetContact(0).normal);
         }
 
         bounceSound.Play();

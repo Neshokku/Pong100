@@ -664,6 +664,56 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &743109587
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 743109589}
+  - component: {fileID: 743109588}
+  m_Layer: 0
+  m_Name: PowerBoxGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &743109588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 743109587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 880e94566a0fbe44293d455a10f75372, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PowerBoxGenerator
+  powerBoxPrefab: {fileID: 8123056643511848057, guid: 34031d305b1c9da43b125ef365634c64, type: 3}
+  generatorHeight: 8
+  generatorWidth: 10
+  maxBoxes: 2
+  timeBetweenSpawns: 10
+  timeUntilFirstSpawn: 6
+--- !u!4 &743109589
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 743109587}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &767843124
 GameObject:
   m_ObjectHideFlags: 0
@@ -1491,6 +1541,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3777817923543182983, guid: 81ca4734531342941a1796d8b0927cb6, type: 3}
+      propertyPath: keyPower
+      value: 256
+      objectReference: {fileID: 0}
     - target: {fileID: 4634226487843322309, guid: 81ca4734531342941a1796d8b0927cb6, type: 3}
       propertyPath: m_Name
       value: Player2
@@ -1552,3 +1606,4 @@ SceneRoots:
   - {fileID: 190106663}
   - {fileID: 902793255}
   - {fileID: 1725551947}
+  - {fileID: 743109589}
