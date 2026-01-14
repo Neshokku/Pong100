@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38b48d2eea3027642bf851ec9ba61639, type: 3}
   m_Name: PowerSpriteData
   m_EditorClassIdentifier: Assembly-CSharp::PowerSpritesData
-  randomSprite: {fileID: 21300000, guid: c506f3fe157d87f48a45a245cfe3c546, type: 3}
   powerSprites:
   - power: 0
     sprite: {fileID: 21300000, guid: 9e975218a8bc48640b6baf7f5a2277ac, type: 3}
   - power: 1
     sprite: {fileID: 21300000, guid: 3534345986ee47342a3c0f49880ce0d9, type: 3}
+  - power: 2
+    sprite: {fileID: 21300000, guid: 5c92516dd2c33ee4fb220cbefae6dec0, type: 3}
