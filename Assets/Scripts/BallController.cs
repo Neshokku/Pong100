@@ -14,7 +14,7 @@ public class BallController : MonoBehaviour
     [SerializeField] private float left = -9.0f;
 
     // Non Assignables
-    private Vector2 direction;
+    public Vector2 direction { get; private set; }
     private bool isOutside = false;
 
     // Component References
@@ -59,6 +59,7 @@ public class BallController : MonoBehaviour
         speed = initialSpeed;
         isOutside = false;
         spriteRenderer.color = Color.white;
+        lastPlayerHit = null;
     }
 
     void FixedUpdate()
@@ -97,5 +98,15 @@ public class BallController : MonoBehaviour
         }
 
         bounceSound.Play();
+    }
+
+    public void SetDirection(Vector2 dir)
+    {
+        this.direction = dir;
+    }
+
+    public void SetPosition(Vector2 pos)
+    {
+        transform.position = pos;
     }
 }

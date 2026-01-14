@@ -207,6 +207,9 @@ MonoBehaviour:
   keyPower: 32
   powerSprite: {fileID: 1064516044793665467}
   powerSpritesData: {fileID: 11400000, guid: f2854893e232e9748bdd2ae1bec4bd41, type: 2}
+  portal: {fileID: 1954331130592589103, guid: a564bd7a7d1e8564182220c67cb77bb6, type: 3}
+  portalSpawnDistance: 1.5
+  inversionVFX: {fileID: 7150466498841561496, guid: 2665eb47c5267614fb8a5588ac31b981, type: 3}
 --- !u!50 &6789559230427563963
 Rigidbody2D:
   serializedVersion: 5

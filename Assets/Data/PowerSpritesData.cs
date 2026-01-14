@@ -5,7 +5,8 @@ using UnityEngine;
 public enum Power
 {
     Portal,
-    Inversion
+    Inversion,
+    Shock
 }
 
 [System.Serializable]

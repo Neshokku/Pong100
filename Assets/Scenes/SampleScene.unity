@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 190106667}
   m_Layer: 0
   m_Name: Ball
-  m_TagString: Untagged
+  m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -214,10 +214,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32f9867ff7bd7394bae9871dd2dd6549, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BallController
-  initialSpeed: 5
+  initialSpeed: 8
   initialDir: {x: 0.7, y: 0.4}
   onCollisionSpeedAdd: 0.5
-  maxSpeed: 10
+  maxSpeed: 12
   right: 9
   left: -9
   pointSound: {fileID: 190106666}
@@ -617,7 +617,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 00000000894c3d86
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -1540,6 +1540,10 @@ PrefabInstance:
     - target: {fileID: 1858477572033014197, guid: 81ca4734531342941a1796d8b0927cb6, type: 3}
       propertyPath: m_Color.r
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2689653370151960365, guid: 81ca4734531342941a1796d8b0927cb6, type: 3}
+      propertyPath: keyPower
+      value: 256
       objectReference: {fileID: 0}
     - target: {fileID: 3777817923543182983, guid: 81ca4734531342941a1796d8b0927cb6, type: 3}
       propertyPath: keyPower
