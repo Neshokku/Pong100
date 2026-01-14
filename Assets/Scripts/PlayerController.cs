@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -18,6 +19,7 @@ public class PlayerController : MonoBehaviour
     private BoxCollider2D boxCollider;
     [SerializeField] SpriteRenderer mainSprite;
 
+    private bool canMove = true;
 
     void Start()
     {
@@ -27,14 +29,17 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Input.GetKey(keyUp) && GetUpperY() < maxY)
+        if (canMove)
         {
-            rb.MovePosition((Vector2)transform.position + (Vector2.up * speed * Time.fixedDeltaTime));
-        }
+            if (Input.GetKey(keyUp) && GetUpperY() < maxY)
+            {
+                rb.MovePosition((Vector2)transform.position + (Vector2.up * speed * Time.fixedDeltaTime));
+            }
 
-        if (Input.GetKey(keyDown) && GetLowerY() > minY)
-        {
-            rb.MovePosition((Vector2)transform.position + (Vector2.down * speed * Time.fixedDeltaTime));
+            if (Input.GetKey(keyDown) && GetLowerY() > minY)
+            {
+                rb.MovePosition((Vector2)transform.position + (Vector2.down * speed * Time.fixedDeltaTime));
+            }
         }
     }
 
@@ -52,5 +57,18 @@ public class PlayerController : MonoBehaviour
     {
         if (mainSprite != null) return mainSprite.color;
         return Color.white;
+    }
+
+    public void DisableMovementForSeconds(float seconds)
+    {
+        StopAllCoroutines();
+        StartCoroutine(DisableMovementForSecondsCoroutine(seconds));
+    }
+
+    private IEnumerator DisableMovementForSecondsCoroutine(float seconds)
+    {
+        canMove = false;
+        yield return new WaitForSeconds(seconds);
+        canMove = true;
     }
 }

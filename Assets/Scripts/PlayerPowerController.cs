@@ -13,6 +13,9 @@ public class PlayerPowerController : MonoBehaviour
     [SerializeField] private GameObject portal;
     [SerializeField] private float portalSpawnDistance = 1.0f;
 
+    [Header("ShockConfig")]
+    [SerializeField] private GameObject shockProjectile;
+
     [Header("VFX")]
     [SerializeField] private GameObject inversionVFX;
     public bool hasPower { get; private set; } = false;
@@ -24,6 +27,11 @@ public class PlayerPowerController : MonoBehaviour
         {
             UsePower();
         }
+    }
+
+    private bool IsOnLeftSide()
+    {
+        return transform.position.x < 0;
     }
 
     public void SetPower(Power power)
@@ -48,7 +56,17 @@ public class PlayerPowerController : MonoBehaviour
 
         if (power == Power.Portal)
         {
-            Instantiate(portal, new Vector2(transform.position.x + (transform.position.x < 0 ? portalSpawnDistance : -portalSpawnDistance), transform.position.y), Quaternion.identity);
+            Instantiate(portal, new Vector2(transform.position.x + (IsOnLeftSide() ? portalSpawnDistance : -portalSpawnDistance), transform.position.y), Quaternion.identity);
+        }
+
+        if (power == Power.Shock)
+        {
+            GameObject newProjectile = Instantiate(shockProjectile, (Vector2)transform.position + (IsOnLeftSide() ? Vector2.right : Vector2.left), Quaternion.identity);
+            
+            if (newProjectile != null && newProjectile.TryGetComponent<ShockProjectileController>(out ShockProjectileController projController))
+            {
+                projController.direction = IsOnLeftSide() ? Vector2.right : Vector2.left;
+            }
         }
 
         hasPower = false;
