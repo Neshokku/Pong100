@@ -48,11 +48,12 @@ public class PowerBoxController : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent<BallController>(out BallController ballController))
         {
-            if (ballController.lastPlayerHit != null && !ballController.lastPlayerHit.hasPower)
+            PlayerPowerController playerPowerController = ballController.lastPlayerHit.GetComponent<PlayerPowerController>();
+            if (playerPowerController != null && !playerPowerController.hasPower)
             {
-                ballController.lastPlayerHit.SetPower(power);
-                Dissapear();
+                playerPowerController.SetPower(power);
             }
+            Dissapear();
         }
     }
 }

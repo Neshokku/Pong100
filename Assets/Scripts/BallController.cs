@@ -20,7 +20,7 @@ public class BallController : MonoBehaviour
     // Component References
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
-    public PlayerController lastPlayerHit { get; private set; }
+    public GameObject lastPlayerHit { get; private set; }
     [Header("Sounds")]
     [SerializeField] private AudioSource pointSound;
     [SerializeField] private AudioSource bounceSound;
@@ -86,9 +86,9 @@ public class BallController : MonoBehaviour
             if (playerController != null)
             {
                 spriteRenderer.color = playerController.GetColor();
-
-                lastPlayerHit = playerController;
             }
+
+            lastPlayerHit = collision.gameObject;
                 
         }
         else

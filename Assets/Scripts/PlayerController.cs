@@ -5,7 +5,6 @@ public class PlayerController : MonoBehaviour
     [Header("Controls")]
     [SerializeField] private KeyCode keyUp = KeyCode.UpArrow;
     [SerializeField] private KeyCode keyDown = KeyCode.DownArrow;
-    [SerializeField] private KeyCode keyPower = KeyCode.Space;
 
     [Header("Stats")]
     [SerializeField] private float speed = 0.1f;
@@ -18,25 +17,12 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private BoxCollider2D boxCollider;
     [SerializeField] SpriteRenderer mainSprite;
-    [SerializeField] SpriteRenderer powerSprite;
-    [SerializeField] PowerSpritesData powerSpritesData;
-
-    public bool hasPower { get; private set; } = false;
-    public Power power { get; private set; }
 
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
-    }
-
-    void Update()
-    {
-        if (hasPower && Input.GetKeyDown(keyPower))
-        {
-            UsePower();
-        }
     }
 
     void FixedUpdate()
@@ -66,18 +52,5 @@ public class PlayerController : MonoBehaviour
     {
         if (mainSprite != null) return mainSprite.color;
         return Color.white;
-    }
-
-    public void SetPower(Power power)
-    {
-        hasPower = true;
-        this.power = power;
-        powerSprite.sprite = powerSpritesData.GetSprite(power);
-    }
-
-    public void UsePower()
-    {
-        hasPower = false;
-        powerSprite.sprite = null;
     }
 }
