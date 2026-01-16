@@ -213,3 +213,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShockProjectileController
   speed: 20
   direction: {x: 1, y: 0}
+  stunDuration: 2.5
+  lifeTime: 4
+  electricityVFX: {fileID: 3263318439433884887, guid: ebf0d315b9f8e5f46ac5814ef288b62d, type: 3}

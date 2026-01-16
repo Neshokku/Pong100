@@ -15,6 +15,7 @@ public class PlayerPowerController : MonoBehaviour
 
     [Header("ShockConfig")]
     [SerializeField] private GameObject shockProjectile;
+    [SerializeField] private AudioSource shootSound;
 
     [Header("VFX")]
     [SerializeField] private GameObject inversionVFX;
@@ -66,6 +67,7 @@ public class PlayerPowerController : MonoBehaviour
             if (newProjectile != null && newProjectile.TryGetComponent<ShockProjectileController>(out ShockProjectileController projController))
             {
                 projController.direction = IsOnLeftSide() ? Vector2.right : Vector2.left;
+                shootSound.Play();
             }
         }
 

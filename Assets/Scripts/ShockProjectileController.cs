@@ -9,6 +9,7 @@ public class ShockProjectileController : MonoBehaviour
     public Vector2 direction = Vector2.right;
     [SerializeField] private float stunDuration = 1.5f;
     [SerializeField] private float lifeTime = 4.0f;
+    [SerializeField] private GameObject electricityVFX;
 
     // Components
     private Rigidbody2D rb;
@@ -29,6 +30,8 @@ public class ShockProjectileController : MonoBehaviour
         if (collision.gameObject.TryGetComponent<PlayerController>(out PlayerController playerController))
         {
             playerController.DisableMovementForSeconds(stunDuration);
+            GameObject vfx = Instantiate(electricityVFX, playerController.transform.position, Quaternion.identity);
+            Destroy(vfx, stunDuration);
             Destroy(gameObject);
         }
     }
