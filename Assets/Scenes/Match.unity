@@ -661,8 +661,8 @@ MonoBehaviour:
   player2ScoreText: {fileID: 1881936705}
   counterText: {fileID: 1672785712}
   multiplierText: {fileID: 2124140801}
-  timeBetweenMultiplierIncreases: 30
-  pointMultiplier: 25
+  timeBetweenMultiplierIncreases: 25
+  pointMultiplier: 1
 --- !u!4 &902793255
 Transform:
   m_ObjectHideFlags: 0
@@ -747,7 +747,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 59fbae427dcd43f4390781774cc74120, type: 2}
   m_sharedMaterial: {fileID: -7363772869947046088, guid: 59fbae427dcd43f4390781774cc74120, type: 2}
@@ -1089,7 +1089,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 59fbae427dcd43f4390781774cc74120, type: 2}
   m_sharedMaterial: {fileID: -7363772869947046088, guid: 59fbae427dcd43f4390781774cc74120, type: 2}
