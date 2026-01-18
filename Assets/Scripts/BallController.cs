@@ -36,6 +36,7 @@ public class BallController : MonoBehaviour
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
+    // randomizes the direction of the ball
     private void RandomizeDirection()
     {
         float horizontalDir = Random.value < 0.5f ? -1f : 1f;
@@ -68,6 +69,7 @@ public class BallController : MonoBehaviour
         }
     }
 
+    // resets the ball position to the center of the screen
     private void ResetBall()
     {
         transform.position = Vector2.zero;
@@ -132,12 +134,17 @@ public class BallController : MonoBehaviour
         StartCoroutine(IntangibleForSecondsRoutine(seconds));
     }
 
+    public void RemoveIntangibility()
+    {
+        intangibleStacks = 0;
+    }
+
     private bool IsIntangible() { return intangibleStacks < 0; }
 
     private IEnumerator IntangibleForSecondsRoutine(float seconds)
     {
         intangibleStacks++;
         yield return new WaitForSeconds(seconds);
-        intangibleStacks--;
+        if (intangibleStacks > 0) intangibleStacks--;
     }
 }
