@@ -3,13 +3,33 @@ using UnityEngine;
 public class PortalController : MonoBehaviour
 {
     [SerializeField] private GrowAndDissapear shrinkAnim;
+    [SerializeField] private float lifeTime = 3.0f;
+
+    [SerializeField] private AudioClip transportSound;
+    [SerializeField] private AudioClip spawnSound;
+
+    private AudioSource audioSource;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(spawnSound);
+        Invoke(nameof(Dissapear), lifeTime);
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.TryGetComponent<BallController>(out BallController ballController))
         {
             ballController.SetPosition(new Vector2(-(ballController.transform.position.x), ballController.transform.position.y));
+            ballController.SetDirection(new Vector2(-(ballController.direction.x), ballController.direction.y));
+            audioSource.PlayOneShot(transportSound);
             shrinkAnim.Animate();
         }
+    }
+
+    private void Dissapear()
+    {
+        shrinkAnim.Animate();
     }
 }

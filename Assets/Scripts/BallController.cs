@@ -13,6 +13,8 @@ public class BallController : MonoBehaviour
     [Header("Limits")]
     [SerializeField] private float right = 9.0f;
     [SerializeField] private float left = -9.0f;
+    [SerializeField] private float up = 5.0f;
+    [SerializeField] private float down = -5.0f;
 
     // Non Assignables
     public Vector2 direction { get; private set; }
@@ -22,6 +24,7 @@ public class BallController : MonoBehaviour
     // Component References
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
+    private BoxCollider2D boxCollider;
     public GameObject lastPlayerHit { get; private set; }
     [Header("Sounds")]
     [SerializeField] private AudioSource pointSound;
@@ -34,6 +37,7 @@ public class BallController : MonoBehaviour
         speed = initialSpeed;
         isOutside = false;
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        boxCollider = GetComponent<BoxCollider2D>();
     }
 
     // randomizes the direction of the ball
@@ -66,6 +70,18 @@ public class BallController : MonoBehaviour
             GameManagerController.Instance.AddScoreToPlayer2(1);
             pointSound.Play();
             Invoke(nameof(ResetBall), 1.2f);
+        }
+
+        if (transform.position.y + boxCollider.size.y / 2 > up && Mathf.Sign(direction.y) > 0)
+        {
+            direction = new Vector2(direction.x, direction.y * -1);
+            bounceSound.Play();
+        }
+
+        if (transform.position.y - boxCollider.size.y / 2 < down && Mathf.Sign(direction.y) < 0)
+        {
+            direction = new Vector2(direction.x, direction.y * -1);
+            bounceSound.Play();
         }
     }
 
@@ -110,10 +126,6 @@ public class BallController : MonoBehaviour
             lastPlayerHit = collision.gameObject;
 
             IntangibleForSeconds(intangibilityTimeOnHit);
-        }
-        else
-        {
-            direction = Vector2.Reflect(direction, collision.GetContact(0).normal);
         }
 
         bounceSound.Play();
