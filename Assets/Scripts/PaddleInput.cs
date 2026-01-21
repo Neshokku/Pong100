@@ -1,12 +1,15 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PaddleInput : MonoBehaviour
 {
 
     [Header("Controls")]
     [SerializeField] private KeyCode keyUp = KeyCode.UpArrow;
+    [SerializeField] private Button upButton;
     [SerializeField] private KeyCode keyDown = KeyCode.DownArrow;
+    [SerializeField] private Button downButton;
     [SerializeField] private KeyCode keyPower = KeyCode.Space;
 
 

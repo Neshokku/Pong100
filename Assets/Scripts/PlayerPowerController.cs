@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(PaddleInput))]
 public class PlayerPowerController : MonoBehaviour
 {
+    [SerializeField] private AudioSource mainSource;
 
     [Header("Components")]
     [SerializeField] SpriteRenderer powerSprite;
@@ -20,12 +21,14 @@ public class PlayerPowerController : MonoBehaviour
 
     [Header("DoubleConfig")]
     [SerializeField] private float doubleTime = 3.0f;
-
+    [SerializeField] private AudioClip doubleSound;
 
     [Header("VFX")]
     [SerializeField] private GameObject inversionVFX;
     public bool hasPower { get; private set; } = false;
     public Power power { get; private set; }
+
+    
 
     private void Awake()
     {
@@ -88,6 +91,7 @@ public class PlayerPowerController : MonoBehaviour
         if (power == Power.Double)
         {
             GameManagerController.Instance.ApplyDoublePointsForSeconds(doubleTime);
+            mainSource.PlayOneShot(doubleSound);
         }
 
         hasPower = false;
