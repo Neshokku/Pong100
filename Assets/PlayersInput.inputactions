@@ -1,0 +1,139 @@
+{
+    "version": 1,
+    "name": "PlayersInput",
+    "maps": [
+        {
+            "name": "KeyboardPaddles",
+            "id": "a933c50e-069e-4aac-a5f4-943a5ea61918",
+            "actions": [
+                {
+                    "name": "MovePlayer1",
+                    "type": "Value",
+                    "id": "c122a578-b235-4fdf-bedb-2f67fa25e494",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "MovePlayer2",
+                    "type": "Value",
+                    "id": "953f1a67-a123-43b2-8a5c-b026fac59676",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "UsePowerPlayer1",
+                    "type": "Button",
+                    "id": "04171e18-57b3-45d3-adc5-50c1bfac6fd5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "UsePowerPlayer2",
+                    "type": "Button",
+                    "id": "2be48bcf-c264-4144-b92b-e77c8fd65fb1",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "2D Vector",
+                    "id": "33a2a872-6eb8-44e9-ab1e-38053353aea1",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "NormalizeVector2",
+                    "groups": "",
+                    "action": "MovePlayer1",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "f0ce702d-db5c-4785-b2aa-2ea85983cac4",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MovePlayer1",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "a7a033ef-c3bc-497f-9e11-a50e09489958",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MovePlayer1",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "23068fa6-9390-4a10-bb5f-d94da91345bc",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "NormalizeVector2",
+                    "groups": "",
+                    "action": "MovePlayer2",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "d01866ae-64bc-404f-9845-c302ae14af96",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MovePlayer2",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "1c481670-ee0c-4421-860b-7b1996b45be5",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MovePlayer2",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "31e8cd0c-d9b0-434c-8eda-18ec15a3ecd3",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UsePowerPlayer1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a68137ec-e5f6-4ed7-a30f-a1bf6a241354",
+                    "path": "<Keyboard>/numpad0",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UsePowerPlayer2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

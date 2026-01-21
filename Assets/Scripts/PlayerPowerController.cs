@@ -17,7 +17,7 @@ public class PlayerPowerController : MonoBehaviour
 
     [Header("ShockConfig")]
     [SerializeField] private GameObject shockProjectile;
-    [SerializeField] private AudioSource shootSound;
+    [SerializeField] private AudioClip shootSound;
 
     [Header("DoubleConfig")]
     [SerializeField] private float doubleTime = 3.0f;
@@ -84,7 +84,7 @@ public class PlayerPowerController : MonoBehaviour
             if (newProjectile != null && newProjectile.TryGetComponent<ShockProjectileController>(out ShockProjectileController projController))
             {
                 projController.direction = IsOnLeftSide() ? Vector2.right : Vector2.left;
-                shootSound.Play();
+                mainSource.PlayOneShot(shootSound);
             }
         }
 

@@ -1,39 +1,35 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PaddleInput : MonoBehaviour
 {
 
-    [Header("Controls")]
-    [SerializeField] private KeyCode keyUp = KeyCode.UpArrow;
-    [SerializeField] private Button upButton;
-    [SerializeField] private KeyCode keyDown = KeyCode.DownArrow;
-    [SerializeField] private Button downButton;
-    [SerializeField] private KeyCode keyPower = KeyCode.Space;
+    private PlayerInput playerInput;
 
+    [Header("Controls")]
+    [SerializeField] private string movementActionName;
+    [SerializeField] private string usePowerActionName;
 
     // Variables
     public Vector2 input { get; private set; } = Vector2.zero;
     public event Action powerKeyPressed;
 
+    private void Awake()
+    {
+        playerInput = GetComponent<PlayerInput>();
+    }
+
     void Update()
     {
-        input = Vector2.zero;
+        input = playerInput.actions[movementActionName].ReadValue<Vector2>();
+        Debug.Log("Read input from " + movementActionName + " - the value is " + input);
+        playerInput.actions[usePowerActionName].performed += OnPowerUsed;
+    }
 
-        if (Input.GetKey(keyUp))
-        {
-            input = new Vector2(input.x, input.y + 1);
-        }
-
-        if (Input.GetKey(keyDown))
-        {
-            input = new Vector2(input.x, input.y - 1);
-        }
-
-        if (Input.GetKeyDown(keyPower))
-        {
-            powerKeyPressed.Invoke();
-        }
+    public void OnPowerUsed(InputAction.CallbackContext callbackContext)
+    {
+        powerKeyPressed.Invoke();
     }
 }
