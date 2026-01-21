@@ -1,12 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(PaddleInput))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("Controls")]
-    [SerializeField] private KeyCode keyUp = KeyCode.UpArrow;
-    [SerializeField] private KeyCode keyDown = KeyCode.DownArrow;
-
     [Header("Stats")]
     [SerializeField] private float speed = 0.1f;
 
@@ -17,26 +14,28 @@ public class PlayerController : MonoBehaviour
     [Header("Components")]
     private Rigidbody2D rb;
     private BoxCollider2D boxCollider;
+    private PaddleInput paddleInput;
     [SerializeField] SpriteRenderer mainSprite;
 
     private bool canMove = true;
 
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
+        paddleInput = GetComponent<PaddleInput>();
     }
 
     void FixedUpdate()
     {
         if (canMove)
         {
-            if (Input.GetKey(keyUp) && GetUpperY() < maxY)
+            if (paddleInput.input.y > 0 && GetUpperY() < maxY)
             {
                 rb.MovePosition((Vector2)transform.position + (Vector2.up * speed * Time.fixedDeltaTime));
             }
 
-            if (Input.GetKey(keyDown) && GetLowerY() > minY)
+            if (paddleInput.input.y < 0 && GetLowerY() > minY)
             {
                 rb.MovePosition((Vector2)transform.position + (Vector2.down * speed * Time.fixedDeltaTime));
             }

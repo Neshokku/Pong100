@@ -6,7 +6,8 @@ public enum Power
 {
     Portal,
     Inversion,
-    Shock
+    Shock,
+    Double
 }
 
 [System.Serializable]

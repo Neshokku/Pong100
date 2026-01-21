@@ -22,7 +22,7 @@ public class PortalController : MonoBehaviour
         if (collision.gameObject.TryGetComponent<BallController>(out BallController ballController))
         {
             ballController.SetPosition(new Vector2(-(ballController.transform.position.x), ballController.transform.position.y));
-            ballController.SetDirection(new Vector2(-(ballController.direction.x), ballController.direction.y));
+            ballController.SetDirection(new Vector2(transform.position.x < 0 ? 1 : -1, ballController.direction.y));
             audioSource.PlayOneShot(transportSound);
             shrinkAnim.Animate();
         }

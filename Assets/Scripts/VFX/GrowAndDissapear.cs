@@ -7,8 +7,8 @@ public class GrowAndDissapear : MonoBehaviour
     [SerializeField] private float duration = 0.3f;
     [SerializeField] private float targetScale = 1.5f;
     [SerializeField] private float targetAlpha = 0.0f;
-    [SerializeField] private AnimationCurve curve;
-    [SerializeField] private bool autoStart = true;
+    [SerializeField] private AnimationCurve curve = AnimationCurve.Constant(0.0f, 1.0f, 1.0f);
+    [SerializeField] private bool autoStart = false;
     [SerializeField] private bool destroyOnEnd = true;
 
     [Header("Components")]
@@ -21,6 +21,15 @@ public class GrowAndDissapear : MonoBehaviour
 
     public void Animate()
     {
+        StartCoroutine(nameof(StartAnimation));
+    }
+
+    public void Animate(float duration, float targetScale, float targetAlpha, bool destroyOnEnd)
+    {
+        this.duration = duration;
+        this.targetScale = targetScale;
+        this.targetAlpha = targetAlpha;
+        this.destroyOnEnd = destroyOnEnd;
         StartCoroutine(nameof(StartAnimation));
     }
 

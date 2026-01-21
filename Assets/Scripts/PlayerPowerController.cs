@@ -1,13 +1,14 @@
+using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(PaddleInput))]
 public class PlayerPowerController : MonoBehaviour
 {
-    [Header("Controls")]
-    [SerializeField] private KeyCode keyPower = KeyCode.Space;
 
     [Header("Components")]
     [SerializeField] SpriteRenderer powerSprite;
     [SerializeField] PowerSpritesData powerSpritesData;
+    private PaddleInput paddleInput;
 
     [Header("PortalConfig")]
     [SerializeField] private GameObject portal;
@@ -17,17 +18,23 @@ public class PlayerPowerController : MonoBehaviour
     [SerializeField] private GameObject shockProjectile;
     [SerializeField] private AudioSource shootSound;
 
+    [Header("DoubleConfig")]
+    [SerializeField] private float doubleTime = 3.0f;
+
+
     [Header("VFX")]
     [SerializeField] private GameObject inversionVFX;
     public bool hasPower { get; private set; } = false;
     public Power power { get; private set; }
 
-    void Update()
+    private void Awake()
     {
-        if (hasPower && Input.GetKeyDown(keyPower))
-        {
-            UsePower();
-        }
+        paddleInput = GetComponent<PaddleInput>();
+    }
+
+    private void Start()
+    {
+        paddleInput.powerKeyPressed += UsePower;
     }
 
     private bool IsOnLeftSide()
@@ -42,8 +49,15 @@ public class PlayerPowerController : MonoBehaviour
         powerSprite.sprite = powerSpritesData.GetSprite(power);
     }
 
+    IEnumerator DoublePowerRoutine()
+    {
+        yield return new WaitForSeconds(doubleTime);
+    }
+
     public void UsePower()
     {
+        if (!hasPower) return;
+
         if (power == Power.Inversion)
         {
             BallController ballController = FindFirstObjectByType<BallController>();
@@ -69,6 +83,11 @@ public class PlayerPowerController : MonoBehaviour
                 projController.direction = IsOnLeftSide() ? Vector2.right : Vector2.left;
                 shootSound.Play();
             }
+        }
+
+        if (power == Power.Double)
+        {
+            GameManagerController.Instance.ApplyDoublePointsForSeconds(doubleTime);
         }
 
         hasPower = false;

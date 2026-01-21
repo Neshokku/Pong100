@@ -86,9 +86,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PortalController
   shrinkAnim: {fileID: 7525328781354793109}
-  lifeTime: 3
-  transportSound: {fileID: 8300000, guid: 7f45f36c9033bd34982919624d60d62e, type: 3}
-  spawnSound: {fileID: 8300000, guid: d1e8f68c1aaf10f4fa27082a03bf63d8, type: 3}
+  lifeTime: 5
+  transportSound: {fileID: 8300000, guid: 683a36576ea0ee54e8f6ee44e4189d25, type: 3}
+  spawnSound: {fileID: 8300000, guid: 6ca35a7b4c4352e4cbac7b064bb4bce8, type: 3}
 --- !u!114 &7525328781354793109
 MonoBehaviour:
   m_ObjectHideFlags: 0
