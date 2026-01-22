@@ -16,9 +16,9 @@ public class PaddleInput : MonoBehaviour
     public Vector2 input { get; private set; } = Vector2.zero;
     public event Action powerKeyPressed;
 
-    private void Awake()
+    private void Start()
     {
-        playerInput = GetComponent<PlayerInput>();
+        playerInput = GameManagerController.Instance.GetPlayerInput();
     }
 
     void Update()

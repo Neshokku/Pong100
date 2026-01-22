@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GameManagerController : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class GameManagerController : MonoBehaviour
 
 
     [Header("References")]
+    [SerializeField] private PlayerInput playerInput;
     [SerializeField] private TextMeshProUGUI player1ScoreText;
     [SerializeField] private TextMeshProUGUI player2ScoreText;
     [SerializeField] private TextMeshProUGUI counterText;
@@ -173,6 +175,11 @@ public class GameManagerController : MonoBehaviour
             WriteMultiplierText(); 
         }
 
+    }
+
+    public PlayerInput GetPlayerInput()
+    {
+        return playerInput;
     }
 
 }
