@@ -25,6 +25,8 @@ public class GameManagerController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI counterText;
     [SerializeField] private TextMeshProUGUI multiplierText;
     [SerializeField] private TextMeshProUGUI multiplierTextEffect;
+    [SerializeField] private TextMeshProUGUI multiplierText2;
+    [SerializeField] private TextMeshProUGUI multiplierTextEffect2;
 
     [Header("Config")]
     [SerializeField] private float timeBetweenMultiplierIncreases = 30.0f;
@@ -107,6 +109,7 @@ public class GameManagerController : MonoBehaviour
     {
         int finalMultiplier = GetFinalMultiplier();
         multiplierText.text = "x" + finalMultiplier.ToString();
+        multiplierText2.text = "x" + finalMultiplier.ToString();
     }
 
     private int GetFinalMultiplier()
@@ -129,6 +132,7 @@ public class GameManagerController : MonoBehaviour
     IEnumerator MultiplierTextIncreaseEffectRoutine()
     {
         multiplierTextEffect.text = multiplierText.text;
+        multiplierTextEffect2.text = multiplierText.text;
 
         float duration = 0.8f;
         float time = 0.0f;
@@ -147,6 +151,8 @@ public class GameManagerController : MonoBehaviour
 
             multiplierTextEffect.fontSize = Mathf.Lerp(startingFontSixe, endingFontSixe, t);
             multiplierTextEffect.color = Color.Lerp(startingColor, endingColor, t);
+            multiplierTextEffect2.fontSize = Mathf.Lerp(startingFontSixe, endingFontSixe, t);
+            multiplierTextEffect2.color = Color.Lerp(startingColor, endingColor, t);
 
             yield return null;
         }
@@ -154,6 +160,10 @@ public class GameManagerController : MonoBehaviour
         multiplierTextEffect.fontSize = startingFontSixe;
         multiplierTextEffect.color = startingColor;
         multiplierTextEffect.text = "";
+
+        multiplierTextEffect2.fontSize = startingFontSixe;
+        multiplierTextEffect2.color = startingColor;
+        multiplierTextEffect2.text = "";
     }
 
     public void ApplyDoublePointsForSeconds(float seconds)
@@ -165,6 +175,7 @@ public class GameManagerController : MonoBehaviour
     {
         doublePointsStacks++;
         multiplierText.color = Color.green;
+        multiplierText2.color = Color.green;
         WriteMultiplierText();
         StartCoroutine(MultiplierTextIncreaseEffectRoutine());
         yield return new WaitForSeconds(seconds);
@@ -172,6 +183,7 @@ public class GameManagerController : MonoBehaviour
         if (doublePointsStacks <= 0)
         {
             multiplierText.color = Color.white;
+            multiplierText2.color = Color.white;
             WriteMultiplierText(); 
         }
 
