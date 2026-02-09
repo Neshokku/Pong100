@@ -18,6 +18,7 @@ public class GameManagerController : MonoBehaviour
     private BallController ballController;
 
 
+
     [Header("References")]
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private TextMeshProUGUI player1ScoreText;
@@ -27,6 +28,9 @@ public class GameManagerController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI multiplierTextEffect;
     [SerializeField] private TextMeshProUGUI multiplierText2;
     [SerializeField] private TextMeshProUGUI multiplierTextEffect2;
+    [SerializeField] private GameObject mobileControls;
+    [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject allUI;
 
     [Header("Config")]
     [SerializeField] private float timeBetweenMultiplierIncreases = 30.0f;
@@ -42,6 +46,7 @@ public class GameManagerController : MonoBehaviour
 
     private int doublePointsStacks = 0;
 
+    private bool paused = false;
 
     // Components
     private AudioSource audioSource;
@@ -64,6 +69,7 @@ public class GameManagerController : MonoBehaviour
     void Start()
     {
         onPlayerScoreChanged += WriteScores;
+        playerInput.actions["Pause"].performed += TogglePause;
         StartCoroutine(StartGameRoutine());
         StartCoroutine(MultiplierIncreaseRoutine());
     }
@@ -83,6 +89,26 @@ public class GameManagerController : MonoBehaviour
     {
         player1ScoreText.text = player1Score.ToString();
         player2ScoreText.text = player2Score.ToString();
+    }
+
+    private void TogglePause(InputAction.CallbackContext context)
+    {
+        if (!paused)
+        {
+            SetPause(true);
+        } else
+        {
+            SetPause(false);
+        }
+    }
+
+    public void SetPause(bool pause)
+    {
+        paused = pause;
+        mobileControls.SetActive(!pause);
+        allUI.SetActive(!pause);
+        pauseMenu.SetActive(pause);
+        Time.timeScale = pause ? 0.0f : 1.0f;
     }
 
     IEnumerator StartGameRoutine()
