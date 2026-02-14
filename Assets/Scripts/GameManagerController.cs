@@ -44,8 +44,8 @@ public class GameManagerController : MonoBehaviour
     
 
     // Game Variables
-    private int player1Score = 98;
-    private int player2Score = 98;
+    private int player1Score = 0;
+    private int player2Score = 0;
 
     private int doublePointsStacks = 0;
 
