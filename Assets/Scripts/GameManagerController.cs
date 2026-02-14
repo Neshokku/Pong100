@@ -4,6 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GameManagerController : MonoBehaviour
 {
@@ -38,15 +39,19 @@ public class GameManagerController : MonoBehaviour
 
     [Header("Sounds")]
     [SerializeField] private AudioClip multiplierUpSound;
+    [SerializeField] private AudioClip explosionSound;
+    [SerializeField] private AudioClip winSound;
     
 
     // Game Variables
-    private int player1Score = 0;
-    private int player2Score = 0;
+    private int player1Score = 98;
+    private int player2Score = 98;
 
     private int doublePointsStacks = 0;
 
     private bool paused = false;
+
+    private bool gameUp = false;
 
     // Components
     private AudioSource audioSource;
@@ -68,7 +73,8 @@ public class GameManagerController : MonoBehaviour
 
     void Start()
     {
-        onPlayerScoreChanged += WriteScores;
+        gameUp = true;
+        onPlayerScoreChanged += OnScoreChanged;
         playerInput.actions["Pause"].performed += TogglePause;
         StartCoroutine(StartGameRoutine());
         StartCoroutine(MultiplierIncreaseRoutine());
@@ -85,14 +91,49 @@ public class GameManagerController : MonoBehaviour
         onPlayerScoreChanged.Invoke();
     }
 
+    private void OnScoreChanged()
+    {
+        WinCheck();
+        if (gameUp) WriteScores();
+    }
+
     public void WriteScores()
     {
         player1ScoreText.text = player1Score.ToString();
         player2ScoreText.text = player2Score.ToString();
     }
 
+    private void WinCheck()
+    {
+        if (player2Score >= 100)
+        {
+            if (player2Controller.gameObject.TryGetComponent<PaddleInput>(out PaddleInput p2Input))
+            {
+                p2Input.enabled = false;
+            }
+            player2ScoreText.text = "100";
+            player1ScoreText.text = "";
+            player1Controller.Lose();
+            gameUp = false;
+        } else if (player1Score >= 100)
+        {
+            if (player1Controller.gameObject.TryGetComponent<PaddleInput>(out PaddleInput p1Input))
+            {
+                p1Input.enabled = false;
+            }
+            player1ScoreText.text = "100";
+            player2ScoreText.text = "";
+            player2Controller.Lose();
+            gameUp = false;
+        }
+
+        if (!gameUp) StopGame();
+    }
+
     private void TogglePause(InputAction.CallbackContext context)
     {
+        if (!gameUp) return;
+
         if (!paused)
         {
             SetPause(true);
@@ -212,12 +253,32 @@ public class GameManagerController : MonoBehaviour
             multiplierText2.color = Color.white;
             WriteMultiplierText(); 
         }
-
     }
 
     public PlayerInput GetPlayerInput()
     {
         return playerInput;
+    }
+
+    private void StopGame()
+    {
+        ballController.gameObject.SetActive(false);
+        CameraShake cmrShk = FindFirstObjectByType<CameraShake>();
+        if (cmrShk != null) cmrShk.StartShake(0.1f, 0.5f);
+        PowerBoxGenerator powerBoxGenerator = FindFirstObjectByType<PowerBoxGenerator>();
+        if (powerBoxGenerator != null) powerBoxGenerator.gameObject.SetActive(false);
+        audioSource.PlayOneShot(explosionSound);
+        audioSource.PlayOneShot(winSound, 2.0f);
+        multiplierText.text = "";
+        multiplierText2.text = "";
+        mobileControls.SetActive(false);
+        StopAllCoroutines();
+        Invoke(nameof(RedirectToMenu), 2.0f);
+    }
+
+    private void RedirectToMenu()
+    {
+        SceneManager.LoadScene("Menu");
     }
 
 }

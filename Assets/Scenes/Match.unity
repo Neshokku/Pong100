@@ -590,6 +590,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -715,6 +716,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cddefae5a536044484cc07540ace431, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraShake
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -982,6 +995,10 @@ PrefabInstance:
       propertyPath: keyDown
       value: 115
       objectReference: {fileID: 0}
+    - target: {fileID: 3777817923543182983, guid: 81ca4734531342941a1796d8b0927cb6, type: 3}
+      propertyPath: deathVFX
+      value: 
+      objectReference: {fileID: 5310105430868991233, guid: 3506956303162f44783557d1677998b5, type: 3}
     - target: {fileID: 4634226487843322309, guid: 81ca4734531342941a1796d8b0927cb6, type: 3}
       propertyPath: m_Name
       value: Player1
@@ -1084,6 +1101,8 @@ MonoBehaviour:
   timeBetweenMultiplierIncreases: 20
   pointMultiplier: 1
   multiplierUpSound: {fileID: 8300000, guid: 7fe6d51aafe79b244b9e097f7927701c, type: 3}
+  explosionSound: {fileID: 8300000, guid: b6e7a352733278f48b6f1ad393b064c5, type: 3}
+  winSound: {fileID: 8300000, guid: 29b5d613062a9e542b7ba43a662f93a4, type: 3}
 --- !u!4 &902793255
 Transform:
   m_ObjectHideFlags: 0
@@ -2803,6 +2822,10 @@ PrefabInstance:
       propertyPath: usePowerActionName
       value: UsePowerPlayer2
       objectReference: {fileID: 0}
+    - target: {fileID: 3777817923543182983, guid: 81ca4734531342941a1796d8b0927cb6, type: 3}
+      propertyPath: deathVFX
+      value: 
+      objectReference: {fileID: 5795283816943946863, guid: e06f8ae0acb949846a04105fc0a4c5da, type: 3}
     - target: {fileID: 3777817923543182983, guid: 81ca4734531342941a1796d8b0927cb6, type: 3}
       propertyPath: keyPower
       value: 256

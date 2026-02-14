@@ -17,7 +17,11 @@ public class PlayerController : MonoBehaviour
     private PaddleInput paddleInput;
     [SerializeField] SpriteRenderer mainSprite;
 
+    [Header("VFX")]
+    [SerializeField] GameObject deathVFX;
+
     private bool canMove = true;
+
 
     void Awake()
     {
@@ -69,5 +73,11 @@ public class PlayerController : MonoBehaviour
         canMove = false;
         yield return new WaitForSeconds(seconds);
         canMove = true;
+    }
+
+    public void Lose()
+    {
+        Instantiate(deathVFX, new Vector2(transform.position.x, transform.position.y), Quaternion.identity);
+        gameObject.SetActive(false);
     }
 }
