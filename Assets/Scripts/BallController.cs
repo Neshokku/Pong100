@@ -27,8 +27,9 @@ public class BallController : MonoBehaviour
     private BoxCollider2D boxCollider;
     public GameObject lastPlayerHit { get; private set; }
     [Header("Sounds")]
-    [SerializeField] private AudioSource pointSound;
-    [SerializeField] private AudioSource bounceSound;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip pointSound;
+    [SerializeField] private AudioClip bounceSound;
 
     void Start()
     {
@@ -60,7 +61,7 @@ public class BallController : MonoBehaviour
         {
             isOutside = true;
             GameManagerController.Instance.AddScoreToPlayer1(1);
-            pointSound.Play();
+            audioSource.PlayOneShot(pointSound, 2.0f);
             Invoke(nameof(ResetBall), 1.2f);
         }
 
@@ -68,20 +69,20 @@ public class BallController : MonoBehaviour
         {
             isOutside = true;
             GameManagerController.Instance.AddScoreToPlayer2(1);
-            pointSound.Play();
+            audioSource.PlayOneShot(pointSound, 2.0f);
             Invoke(nameof(ResetBall), 1.2f);
         }
 
         if (transform.position.y + boxCollider.size.y / 2 > up && Mathf.Sign(direction.y) > 0)
         {
             direction = new Vector2(direction.x, direction.y * -1);
-            bounceSound.Play();
+            audioSource.PlayOneShot(bounceSound);
         }
 
         if (transform.position.y - boxCollider.size.y / 2 < down && Mathf.Sign(direction.y) < 0)
         {
             direction = new Vector2(direction.x, direction.y * -1);
-            bounceSound.Play();
+            audioSource.PlayOneShot(bounceSound);
         }
     }
 
@@ -128,7 +129,7 @@ public class BallController : MonoBehaviour
             IntangibleForSeconds(intangibilityTimeOnHit);
         }
 
-        bounceSound.Play();
+        audioSource.PlayOneShot(bounceSound);
     }
 
     public void SetDirection(Vector2 dir)
