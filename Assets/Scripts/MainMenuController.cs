@@ -5,8 +5,12 @@ public class MainMenuController : MonoBehaviour
 {
     [SerializeField] private string matchSceneName;
 
+    private bool pressedStart = false;
+
     public void StartGame()
     {
-        SceneManager.LoadScene(matchSceneName);
+        if (pressedStart) return;
+        pressedStart = true;
+        SceneTransitionManager.Instance.ChangeScene(matchSceneName);
     }
 }

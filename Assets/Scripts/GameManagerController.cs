@@ -278,7 +278,7 @@ public class GameManagerController : MonoBehaviour
 
     private void RedirectToMenu()
     {
-        SceneManager.LoadScene("Menu");
+        SceneTransitionManager.Instance.ChangeScene("Menu");
     }
 
 }
