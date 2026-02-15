@@ -1079,18 +1079,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SceneTransitionManager
       objectReference: {fileID: 0}
-    - target: {fileID: 3857041917241510533, guid: db8ddd955c38b1645a13f08f5113635e, type: 3}
-      propertyPath: m_Color.b
-      value: 0.05660379
-      objectReference: {fileID: 0}
-    - target: {fileID: 3857041917241510533, guid: db8ddd955c38b1645a13f08f5113635e, type: 3}
-      propertyPath: m_Color.g
-      value: 0.05660379
-      objectReference: {fileID: 0}
-    - target: {fileID: 3857041917241510533, guid: db8ddd955c38b1645a13f08f5113635e, type: 3}
-      propertyPath: m_Color.r
-      value: 0.05660379
-      objectReference: {fileID: 0}
     - target: {fileID: 5174978312320720818, guid: db8ddd955c38b1645a13f08f5113635e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
