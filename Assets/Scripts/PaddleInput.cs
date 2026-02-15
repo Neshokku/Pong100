@@ -16,20 +16,22 @@ public class PaddleInput : MonoBehaviour
     public Vector2 input { get; private set; } = Vector2.zero;
     public event Action powerKeyPressed;
 
-    private void Start()
+    private void OnEnable()
     {
         playerInput = GameManagerController.Instance.GetPlayerInput();
+        playerInput.actions[usePowerActionName].performed += OnPowerUsed;
+    }
+
+    private void OnDisable()
+    {
+        if (playerInput != null)
+            playerInput.actions[usePowerActionName].performed -= OnPowerUsed;
     }
 
     void Update()
     {
         input = playerInput.actions[movementActionName].ReadValue<Vector2>();
-        Debug.Log("Read input from " + movementActionName + " - the value is " + input);
-        playerInput.actions[usePowerActionName].performed += OnPowerUsed;
     }
 
-    public void OnPowerUsed(InputAction.CallbackContext callbackContext)
-    {
-        powerKeyPressed.Invoke();
-    }
+    public void OnPowerUsed(InputAction.CallbackContext callbackContext) => powerKeyPressed?.Invoke();
 }

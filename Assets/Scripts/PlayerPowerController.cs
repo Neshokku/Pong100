@@ -27,7 +27,6 @@ public class PlayerPowerController : MonoBehaviour
     [SerializeField] private GameObject inversionVFX;
     public bool hasPower { get; private set; } = false;
     public Power power { get; private set; }
-
     
 
     private void Awake()
@@ -38,6 +37,11 @@ public class PlayerPowerController : MonoBehaviour
     private void Start()
     {
         paddleInput.powerKeyPressed += UsePower;
+    }
+
+    private void OnDestroy()
+    {
+        paddleInput.powerKeyPressed -= UsePower;
     }
 
     private bool IsOnLeftSide()

@@ -170,6 +170,7 @@ public class GameManagerController : MonoBehaviour
 
         WriteScores();
         WriteMultiplierText();
+        mobileControls.SetActive(true);
     }
 
     private void WriteMultiplierText()
@@ -276,8 +277,9 @@ public class GameManagerController : MonoBehaviour
         Invoke(nameof(RedirectToMenu), 2.0f);
     }
 
-    private void RedirectToMenu()
+    public void RedirectToMenu()
     {
+        Time.timeScale = 1.0f;
         SceneTransitionManager.Instance.ChangeScene("Menu");
     }
 
