@@ -18,7 +18,8 @@ public class PaddleInput : MonoBehaviour
 
     private void OnEnable()
     {
-        playerInput = GameManagerController.Instance.GetPlayerInput();
+        GameManagerController gm = FindFirstObjectByType<GameManagerController>();
+        playerInput = gm?.GetPlayerInput();
         playerInput.actions[usePowerActionName].performed += OnPowerUsed;
     }
 

@@ -94,8 +94,12 @@ public class PlayerPowerController : MonoBehaviour
 
         if (power == Power.Double)
         {
-            GameManagerController.Instance.ApplyDoublePointsForSeconds(doubleTime);
             mainSource.PlayOneShot(doubleSound);
+            GameManagerController gm = FindFirstObjectByType<GameManagerController>();
+            gm?.ApplyDoublePointsForSeconds(doubleTime);
+
+            BallController ballController = FindFirstObjectByType<BallController>();
+            ballController?.DoubleSpeedForSeconds(doubleTime);
         }
 
         hasPower = false;

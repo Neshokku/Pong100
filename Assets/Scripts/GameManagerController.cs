@@ -8,9 +8,6 @@ using UnityEngine.SceneManagement;
 
 public class GameManagerController : MonoBehaviour
 {
-    // Singleton
-    private static GameManagerController instance;
-    public static GameManagerController Instance { get { return instance; } }
 
     [Header("Actors")]
     [SerializeField] PlayerController player1Controller;
@@ -60,14 +57,6 @@ public class GameManagerController : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        } else
-        {
-            Destroy(gameObject);
-        }
-
         audioSource = gameObject.GetComponent<AudioSource>();
     }
 
@@ -237,6 +226,14 @@ public class GameManagerController : MonoBehaviour
     public void ApplyDoublePointsForSeconds(float seconds)
     {
         StartCoroutine(DoublePointsForSecondsRoutine(seconds));
+    }
+
+    public void ResetDoublePoints()
+    {
+        doublePointsStacks = 0;
+        multiplierText.color = Color.white;
+        multiplierText2.color = Color.white;
+        WriteMultiplierText();
     }
 
     IEnumerator DoublePointsForSecondsRoutine(float seconds)

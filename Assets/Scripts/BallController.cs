@@ -9,6 +9,7 @@ public class BallController : MonoBehaviour
     [SerializeField] private float onCollisionSpeedAdd = 0.2f;
     [SerializeField] private float maxSpeed = 10.0f;
     [SerializeField] private float intangibilityTimeOnHit = 0.3f;
+    private int times2Stacks = 0;
 
     [Header("Limits")]
     [SerializeField] private float right = 9.0f;
@@ -21,10 +22,14 @@ public class BallController : MonoBehaviour
     private bool isOutside = false;
     private int intangibleStacks = 0;
 
+    [Header("References")]
+    [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] GameObject greenAura;
+
     // Component References
     private Rigidbody2D rb;
-    private SpriteRenderer spriteRenderer;
     private BoxCollider2D boxCollider;
+    private GameManagerController gm;
     public GameObject lastPlayerHit { get; private set; }
     [Header("Sounds")]
     [SerializeField] private AudioSource audioSource;
@@ -39,6 +44,7 @@ public class BallController : MonoBehaviour
         isOutside = false;
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         boxCollider = GetComponent<BoxCollider2D>();
+        gm = FindFirstObjectByType<GameManagerController>();
     }
 
     // randomizes the direction of the ball
@@ -60,7 +66,8 @@ public class BallController : MonoBehaviour
         if (transform.position.x > right && !isOutside)
         {
             isOutside = true;
-            GameManagerController.Instance.AddScoreToPlayer1(1);
+            gm?.AddScoreToPlayer1(1);
+            gm?.ResetDoublePoints();
             audioSource.PlayOneShot(pointSound, 2.0f);
             Invoke(nameof(ResetBall), 1.2f);
         }
@@ -68,7 +75,8 @@ public class BallController : MonoBehaviour
         if (transform.position.x < left && !isOutside)
         {
             isOutside = true;
-            GameManagerController.Instance.AddScoreToPlayer2(1);
+            gm?.AddScoreToPlayer2(1);
+            gm?.ResetDoublePoints();
             audioSource.PlayOneShot(pointSound, 2.0f);
             Invoke(nameof(ResetBall), 1.2f);
         }
@@ -94,12 +102,13 @@ public class BallController : MonoBehaviour
         isOutside = false;
         spriteRenderer.color = Color.white;
         lastPlayerHit = null;
+        ResetDoubleSpeed();
         RandomizeDirection();
     }
 
     void FixedUpdate()
     {
-        rb.MovePosition((Vector2)transform.position + (direction.normalized * speed * Time.fixedDeltaTime));
+        rb.MovePosition((Vector2)transform.position + (direction.normalized * speed * (times2Stacks > 0 ? 1.5f : 1.0f) * Time.fixedDeltaTime));
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -159,5 +168,25 @@ public class BallController : MonoBehaviour
         intangibleStacks++;
         yield return new WaitForSeconds(seconds);
         if (intangibleStacks > 0) intangibleStacks--;
+    }
+
+    public void DoubleSpeedForSeconds(float seconds)
+    {
+        StartCoroutine(DoubleSpeedCoroutine(seconds));
+    }
+
+    private void ResetDoubleSpeed()
+    {
+        times2Stacks = 0;
+        greenAura.SetActive(false);
+    }
+
+    private IEnumerator DoubleSpeedCoroutine(float seconds)
+    {
+        times2Stacks++;
+        greenAura.SetActive(true);
+        yield return new WaitForSeconds(seconds);
+        if (times2Stacks > 0) times2Stacks--;
+        if (times2Stacks <= 0) greenAura.SetActive(false);
     }
 }

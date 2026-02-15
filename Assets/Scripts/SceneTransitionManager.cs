@@ -7,6 +7,9 @@ public class SceneTransitionManager : MonoBehaviour
     // Singleton
     public static SceneTransitionManager Instance { get; private set; }
 
+    // Variables
+    private bool isChanging = false;
+
     [Header("References")]
     [SerializeField] RectTransform blackRectangleTransform;
 
@@ -27,18 +30,18 @@ public class SceneTransitionManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log(blackRectangleTransform.rect.width);
-        Debug.Log(blackRectangleTransform.position);
         blackRectangleTransform.gameObject.SetActive(false);
     }
 
     public void ChangeScene(string sceneName)
     {
+        if (isChanging) return;
         StartCoroutine(ChangeSceneRoutine(sceneName));
     }
 
     private IEnumerator ChangeSceneRoutine(string sceneName)
     {
+        isChanging = true;
         blackRectangleTransform.gameObject.SetActive(true);
 
         // Black Rectangle comes in
@@ -76,6 +79,8 @@ public class SceneTransitionManager : MonoBehaviour
 
         blackRectangleTransform.position = initialPos;
         blackRectangleTransform.gameObject.SetActive(false);
+
+        isChanging = false;
     }
 
 }
