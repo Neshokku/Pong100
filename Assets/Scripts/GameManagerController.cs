@@ -31,7 +31,7 @@ public class GameManagerController : MonoBehaviour
     [SerializeField] private GameObject allUI;
 
     [Header("Config")]
-    [SerializeField] private float timeBetweenMultiplierIncreases = 30.0f;
+    [SerializeField] private float timeBetweenMultiplierIncreases = 20.0f;
     [SerializeField] private int pointMultiplier = 1;
 
     [Header("Sounds")]
@@ -233,7 +233,7 @@ public class GameManagerController : MonoBehaviour
         doublePointsStacks = 0;
         multiplierText.color = Color.white;
         multiplierText2.color = Color.white;
-        WriteMultiplierText();
+        if (gameUp) WriteMultiplierText();
     }
 
     IEnumerator DoublePointsForSecondsRoutine(float seconds)
