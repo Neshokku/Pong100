@@ -108,7 +108,7 @@ public class BallController : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.MovePosition((Vector2)transform.position + (direction.normalized * speed * (times2Stacks > 0 ? 1.5f : 1.0f) * Time.fixedDeltaTime));
+        rb.MovePosition((Vector2)transform.position + (direction.normalized * speed * (times2Stacks > 0 ? 1.3f : 1.0f) * Time.fixedDeltaTime));
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
