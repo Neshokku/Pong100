@@ -1320,8 +1320,8 @@ MonoBehaviour:
   player2Controller: {fileID: 1223873677}
   ballPrefab: {fileID: 5386499664855109843, guid: 633133e5e631dd24791c06cc830f5806, type: 3}
   playerInput: {fileID: 902793257}
-  player1ScoreText: {fileID: 1418036824}
-  player2ScoreText: {fileID: 1881936705}
+  player1ScoreUI: {fileID: 1418036826}
+  player2ScoreUI: {fileID: 1881936707}
   counterText: {fileID: 1672785712}
   multiplierText: {fileID: 2124140801}
   multiplierTextEffect: {fileID: 1247648208}
@@ -1757,6 +1757,7 @@ GameObject:
   - component: {fileID: 1418036823}
   - component: {fileID: 1418036825}
   - component: {fileID: 1418036824}
+  - component: {fileID: 1418036826}
   m_Layer: 5
   m_Name: Player1Points
   m_TagString: Untagged
@@ -1803,7 +1804,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 59fbae427dcd43f4390781774cc74120, type: 2}
   m_sharedMaterial: {fileID: -7363772869947046088, guid: 59fbae427dcd43f4390781774cc74120, type: 2}
@@ -1883,6 +1884,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1418036822}
   m_CullTransparentMesh: 1
+--- !u!114 &1418036826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418036822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47278baa1d966d6478b26bf153d3e4d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerPointsUI
+  indicatorPrefab: {fileID: 5007805540335134231, guid: b1bd82b947011474288d0dc09b2cc4cf, type: 3}
+  maxPoints: 100
+  minPoints: 0
+  shiftTime: 0.3
+  shiftDistance: 30
+  stayTime: 0.5
 --- !u!1 &1563619815
 GameObject:
   m_ObjectHideFlags: 0
@@ -2455,6 +2474,7 @@ GameObject:
   - component: {fileID: 1881936704}
   - component: {fileID: 1881936706}
   - component: {fileID: 1881936705}
+  - component: {fileID: 1881936707}
   m_Layer: 5
   m_Name: Player2Points
   m_TagString: Untagged
@@ -2501,7 +2521,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 59fbae427dcd43f4390781774cc74120, type: 2}
   m_sharedMaterial: {fileID: -7363772869947046088, guid: 59fbae427dcd43f4390781774cc74120, type: 2}
@@ -2581,6 +2601,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1881936703}
   m_CullTransparentMesh: 1
+--- !u!114 &1881936707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881936703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47278baa1d966d6478b26bf153d3e4d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerPointsUI
+  indicatorPrefab: {fileID: 5007805540335134231, guid: b1bd82b947011474288d0dc09b2cc4cf, type: 3}
+  maxPoints: 100
+  minPoints: 0
+  shiftTime: 0.3
+  shiftDistance: 30
+  stayTime: 0.5
 --- !u!1 &1961248798
 GameObject:
   m_ObjectHideFlags: 0

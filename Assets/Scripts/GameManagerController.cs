@@ -19,8 +19,8 @@ public class GameManagerController : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private PlayerInput playerInput;
-    [SerializeField] private TextMeshProUGUI player1ScoreText;
-    [SerializeField] private TextMeshProUGUI player2ScoreText;
+    [SerializeField] private PlayerPointsUI player1ScoreUI;
+    [SerializeField] private PlayerPointsUI player2ScoreUI;
     [SerializeField] private TextMeshProUGUI counterText;
     [SerializeField] private TextMeshProUGUI multiplierText;
     [SerializeField] private TextMeshProUGUI multiplierTextEffect;
@@ -38,11 +38,6 @@ public class GameManagerController : MonoBehaviour
     [SerializeField] private AudioClip multiplierUpSound;
     [SerializeField] private AudioClip explosionSound;
     [SerializeField] private AudioClip winSound;
-    
-
-    // Game Variables
-    private int player1Score = 0;
-    private int player2Score = 0;
 
     private int doublePointsStacks = 0;
 
@@ -53,8 +48,6 @@ public class GameManagerController : MonoBehaviour
     // Components
     private AudioSource audioSource;
 
-    event Action onPlayerScoreChanged;
-
     private void Awake()
     {
         audioSource = gameObject.GetComponent<AudioSource>();
@@ -63,55 +56,42 @@ public class GameManagerController : MonoBehaviour
     void Start()
     {
         gameUp = true;
-        onPlayerScoreChanged += OnScoreChanged;
         playerInput.actions["Pause"].performed += TogglePause;
         StartCoroutine(StartGameRoutine());
         StartCoroutine(MultiplierIncreaseRoutine());
     }
+    private void Update()
+    {
+        if (gameUp) WinCheck();
+    }
 
     public void AddScoreToPlayer1(int scoreToAdd)
     {
-        player1Score += scoreToAdd * GetFinalMultiplier();
-        onPlayerScoreChanged.Invoke();
+        player1ScoreUI.AddPoints(scoreToAdd * GetFinalMultiplier());
     }
     public void AddScoreToPlayer2(int scoreToAdd)
     {
-        player2Score += scoreToAdd * GetFinalMultiplier();
-        onPlayerScoreChanged.Invoke();
-    }
-
-    private void OnScoreChanged()
-    {
-        WinCheck();
-        if (gameUp) WriteScores();
-    }
-
-    public void WriteScores()
-    {
-        player1ScoreText.text = player1Score.ToString();
-        player2ScoreText.text = player2Score.ToString();
+        player2ScoreUI.AddPoints(scoreToAdd * GetFinalMultiplier());
     }
 
     private void WinCheck()
     {
-        if (player2Score >= 100)
+        if (player2ScoreUI.score >= 100)
         {
             if (player2Controller.gameObject.TryGetComponent<PaddleInput>(out PaddleInput p2Input))
             {
                 p2Input.enabled = false;
             }
-            player2ScoreText.text = "100";
-            player1ScoreText.text = "";
+            player1ScoreUI.gameObject.SetActive(false);
             player1Controller.Lose();
             gameUp = false;
-        } else if (player1Score >= 100)
+        } else if (player1ScoreUI.score >= 100)
         {
             if (player1Controller.gameObject.TryGetComponent<PaddleInput>(out PaddleInput p1Input))
             {
                 p1Input.enabled = false;
             }
-            player1ScoreText.text = "100";
-            player2ScoreText.text = "";
+            player2ScoreUI.gameObject.SetActive(false);
             player2Controller.Lose();
             gameUp = false;
         }
@@ -156,9 +136,9 @@ public class GameManagerController : MonoBehaviour
 
         GameObject ball = Instantiate(ballPrefab, Vector2.zero, Quaternion.identity);
         ballController = ball.GetComponent<BallController>();
-
-        WriteScores();
         WriteMultiplierText();
+        player1ScoreUI.WriteScore();
+        player2ScoreUI.WriteScore();
         mobileControls.SetActive(true);
     }
 
