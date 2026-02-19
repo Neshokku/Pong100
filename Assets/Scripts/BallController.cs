@@ -1,15 +1,21 @@
 using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
+    // Base
+    private float originalBallAlpha;
+    private float originalGreenAuraAlpha;
+
+    private List<float> doubleSpeedStacks = new List<float>();
 
     [SerializeField] private float initialSpeed = 1.0f;
     private float speed;
     [SerializeField] private float onCollisionSpeedAdd = 0.2f;
     [SerializeField] private float maxSpeed = 10.0f;
     [SerializeField] private float intangibilityTimeOnHit = 0.3f;
-    private int times2Stacks = 0;
 
     [Header("Limits")]
     [SerializeField] private float right = 9.0f;
@@ -27,6 +33,7 @@ public class BallController : MonoBehaviour
     [SerializeField] GameObject greenAura;
 
     // Component References
+    private SpriteRenderer greenAuraRenderer;
     private Rigidbody2D rb;
     private BoxCollider2D boxCollider;
     private GameManagerController gm;
@@ -38,6 +45,10 @@ public class BallController : MonoBehaviour
 
     void Start()
     {
+        originalBallAlpha = spriteRenderer.color.a;
+        greenAuraRenderer = greenAura.GetComponent<SpriteRenderer>();
+        originalGreenAuraAlpha = greenAuraRenderer.color.a;
+
         rb = GetComponent<Rigidbody2D>();
         RandomizeDirection();
         speed = initialSpeed;
@@ -92,6 +103,8 @@ public class BallController : MonoBehaviour
             direction = new Vector2(direction.x, direction.y * -1);
             audioSource.PlayOneShot(bounceSound);
         }
+
+        HandleDoubleSpeed();
     }
 
     // resets the ball position to the center of the screen
@@ -108,7 +121,7 @@ public class BallController : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.MovePosition((Vector2)transform.position + (direction.normalized * speed * (times2Stacks > 0 ? 1.3f : 1.0f) * Time.fixedDeltaTime));
+        rb.MovePosition((Vector2)transform.position + (direction.normalized * speed * (doubleSpeedStacks.Count > 0 ? 1.3f : 1.0f) * Time.fixedDeltaTime));
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -172,21 +185,45 @@ public class BallController : MonoBehaviour
 
     public void DoubleSpeedForSeconds(float seconds)
     {
-        StartCoroutine(DoubleSpeedCoroutine(seconds));
+        doubleSpeedStacks.Add(seconds);
+        greenAura.SetActive(true);
     }
 
     private void ResetDoubleSpeed()
     {
-        times2Stacks = 0;
+        doubleSpeedStacks.Clear();
         greenAura.SetActive(false);
     }
 
-    private IEnumerator DoubleSpeedCoroutine(float seconds)
+    private void HandleDoubleSpeed()
     {
-        times2Stacks++;
-        greenAura.SetActive(true);
-        yield return new WaitForSeconds(seconds);
-        if (times2Stacks > 0) times2Stacks--;
-        if (times2Stacks <= 0) greenAura.SetActive(false);
+        for (int i = 0; i < doubleSpeedStacks.Count; i++)
+        {
+            doubleSpeedStacks[i] -= Time.deltaTime;
+            if (doubleSpeedStacks[i] <= 0.0f)
+            {
+                doubleSpeedStacks.RemoveAt(i);
+            }
+        }
+
+        if (doubleSpeedStacks.Count <= 0)
+        {
+            ResetDoubleSpeed();
+        }
+    }
+
+    public void InvisibilityForSeconds(float seconds)
+    {
+
+    }
+
+    private IEnumerator FadeInRoutine()
+    {
+        yield return null;
+    }
+
+    private IEnumerator FadeOutRoutine()
+    {
+        yield return null;
     }
 }

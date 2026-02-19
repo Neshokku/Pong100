@@ -23,6 +23,9 @@ public class PlayerPowerController : MonoBehaviour
     [SerializeField] private float doubleTime = 3.0f;
     [SerializeField] private AudioClip doubleSound;
 
+    [Header("InvisibilityConfig")]
+    [SerializeField] private float invisibilityTime = 1.0f;
+
     [Header("VFX")]
     [SerializeField] private GameObject inversionVFX;
     public bool hasPower { get; private set; } = false;
@@ -100,6 +103,11 @@ public class PlayerPowerController : MonoBehaviour
 
             BallController ballController = FindFirstObjectByType<BallController>();
             ballController?.DoubleSpeedForSeconds(doubleTime);
+        }
+
+        if (power == Power.Invisibility)
+        {
+
         }
 
         hasPower = false;

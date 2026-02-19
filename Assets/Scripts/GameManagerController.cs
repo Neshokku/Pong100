@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -39,7 +40,7 @@ public class GameManagerController : MonoBehaviour
     [SerializeField] private AudioClip explosionSound;
     [SerializeField] private AudioClip winSound;
 
-    private int doublePointsStacks = 0;
+    private List<float> doublePointStacks = new List<float>();
 
     private bool paused = false;
 
@@ -55,7 +56,6 @@ public class GameManagerController : MonoBehaviour
 
     void Start()
     {
-        gameUp = true;
         playerInput.actions["Pause"].performed += TogglePause;
         StartCoroutine(StartGameRoutine());
         StartCoroutine(MultiplierIncreaseRoutine());
@@ -63,6 +63,8 @@ public class GameManagerController : MonoBehaviour
     private void Update()
     {
         if (gameUp) WinCheck();
+        HandleDoublePointTimers();
+
     }
 
     public void AddScoreToPlayer1(int scoreToAdd)
@@ -140,6 +142,7 @@ public class GameManagerController : MonoBehaviour
         player1ScoreUI.WriteScore();
         player2ScoreUI.WriteScore();
         mobileControls.SetActive(true);
+        gameUp = true;
     }
 
     private void WriteMultiplierText()
@@ -151,7 +154,7 @@ public class GameManagerController : MonoBehaviour
 
     private int GetFinalMultiplier()
     {
-        return pointMultiplier * (doublePointsStacks > 0 ? doublePointsStacks * 2 : 1);
+        return pointMultiplier * (doublePointStacks.Count > 0 ? (doublePointStacks.Count * 2) : 1);
     }
 
     IEnumerator MultiplierIncreaseRoutine()
@@ -205,31 +208,35 @@ public class GameManagerController : MonoBehaviour
 
     public void ApplyDoublePointsForSeconds(float seconds)
     {
-        StartCoroutine(DoublePointsForSecondsRoutine(seconds));
+        doublePointStacks.Add(seconds);
+        multiplierText.color = Color.green;
+        multiplierText2.color = Color.green;
+        WriteMultiplierText();
+        StartCoroutine(MultiplierTextIncreaseEffectRoutine());
     }
 
     public void ResetDoublePoints()
     {
-        doublePointsStacks = 0;
+        doublePointStacks.Clear();
         multiplierText.color = Color.white;
         multiplierText2.color = Color.white;
         if (gameUp) WriteMultiplierText();
     }
 
-    IEnumerator DoublePointsForSecondsRoutine(float seconds)
+    private void HandleDoublePointTimers()
     {
-        doublePointsStacks++;
-        multiplierText.color = Color.green;
-        multiplierText2.color = Color.green;
-        WriteMultiplierText();
-        StartCoroutine(MultiplierTextIncreaseEffectRoutine());
-        yield return new WaitForSeconds(seconds);
-        if (doublePointsStacks > 0) doublePointsStacks--;
-        if (doublePointsStacks <= 0)
+        for (int i = 0; i < doublePointStacks.Count; i++)
         {
-            multiplierText.color = Color.white;
-            multiplierText2.color = Color.white;
-            WriteMultiplierText(); 
+            doublePointStacks[i] -= Time.deltaTime;
+            if (doublePointStacks[i] <= 0.0f)
+            {
+                doublePointStacks.RemoveAt(i);
+            }
+        }
+
+        if (doublePointStacks.Count <= 0)
+        {
+            ResetDoublePoints();
         }
     }
 

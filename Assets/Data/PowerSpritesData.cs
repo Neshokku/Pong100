@@ -7,7 +7,8 @@ public enum Power
     Portal,
     Inversion,
     Shock,
-    Double
+    Double,
+    Invisibility
 }
 
 [System.Serializable]
