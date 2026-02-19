@@ -206,6 +206,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerPowerController
   mainSource: {fileID: -3530142601107866273}
+  failPowerSound: {fileID: 8300000, guid: ebcc15ef4d5f79842bc62b32e6bca5ab, type: 3}
   powerSprite: {fileID: 1064516044793665467}
   powerSpritesData: {fileID: 11400000, guid: f2854893e232e9748bdd2ae1bec4bd41, type: 2}
   portal: {fileID: 1954331130592589103, guid: a564bd7a7d1e8564182220c67cb77bb6, type: 3}

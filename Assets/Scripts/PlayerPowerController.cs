@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerPowerController : MonoBehaviour
 {
     [SerializeField] private AudioSource mainSource;
+    [SerializeField] private AudioClip failPowerSound;
 
     [Header("Components")]
     [SerializeField] SpriteRenderer powerSprite;
@@ -77,7 +78,10 @@ public class PlayerPowerController : MonoBehaviour
         {
             BallController ballController = FindFirstObjectByType<BallController>();
 
-            if (ballController != null)
+            if (ballController == null || ballController.isOutside)
+            {
+                cancelPowerLoss = true;
+            } else
             {
                 Instantiate(inversionVFX, ballController.gameObject.transform.position, Quaternion.identity);
                 ballController.SetDirection(new Vector2(ballController.direction.x, -(ballController.direction.y)));
@@ -132,7 +136,11 @@ public class PlayerPowerController : MonoBehaviour
             }
         }
 
-        if (cancelPowerLoss) return;
+        if (cancelPowerLoss)
+        {
+            mainSource.PlayOneShot(failPowerSound);
+            return;
+        }
 
         hasPower = false;
         powerSprite.sprite = null;
