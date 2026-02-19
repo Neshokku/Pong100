@@ -82,6 +82,7 @@ public class BallController : MonoBehaviour
             gm?.AddScoreToPlayer1(1);
             gm?.ResetDoublePoints();
             audioSource.PlayOneShot(pointSound, 2.0f);
+            ResetInvisibility();
             Invoke(nameof(ResetBall), 1.2f);
         }
 
@@ -91,6 +92,7 @@ public class BallController : MonoBehaviour
             gm?.AddScoreToPlayer2(1);
             gm?.ResetDoublePoints();
             audioSource.PlayOneShot(pointSound, 2.0f);
+            ResetInvisibility();
             Invoke(nameof(ResetBall), 1.2f);
         }
 
@@ -147,12 +149,14 @@ public class BallController : MonoBehaviour
             PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
             if (playerController != null)
             {
-                spriteRenderer.color = playerController.GetColor();
+                Color color = playerController.GetColor();
+                spriteRenderer.color = new(color.r, color.g, color.b, spriteRenderer.color.a);
             }
 
             lastPlayerHit = collision.gameObject;
 
             IntangibleForSeconds(intangibilityTimeOnHit);
+            ResetInvisibility();
         }
 
         audioSource.PlayOneShot(bounceSound);
