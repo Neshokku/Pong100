@@ -1205,7 +1205,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2689653370151960365, guid: 81ca4734531342941a1796d8b0927cb6, type: 3}
       propertyPath: invisibilityTime
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 3593856177097748203, guid: 81ca4734531342941a1796d8b0927cb6, type: 3}
       propertyPath: keyUp
