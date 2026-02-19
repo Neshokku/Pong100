@@ -25,7 +25,7 @@ public class BallController : MonoBehaviour
 
     // Non Assignables
     public Vector2 direction { get; private set; }
-    private bool isOutside = false;
+    public bool isOutside { get; private set; } = false;
     private int intangibleStacks = 0;
 
     [Header("References")]

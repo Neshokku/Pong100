@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(PaddleInput))]
@@ -68,6 +69,8 @@ public class PlayerPowerController : MonoBehaviour
     {
         if (!hasPower) return;
 
+        bool cancelPowerLoss = false;
+
         if (power == Power.Inversion)
         {
             BallController ballController = FindFirstObjectByType<BallController>();
@@ -97,18 +100,26 @@ public class PlayerPowerController : MonoBehaviour
 
         if (power == Power.Double)
         {
-            mainSource.PlayOneShot(doubleSound);
             GameManagerController gm = FindFirstObjectByType<GameManagerController>();
-            gm?.ApplyDoublePointsForSeconds(doubleTime);
-
             BallController ballController = FindFirstObjectByType<BallController>();
-            ballController?.DoubleSpeedForSeconds(doubleTime);
+
+            if (ballController == null || ballController.isOutside)
+            {
+                cancelPowerLoss = true;
+            } else
+            {
+                mainSource.PlayOneShot(doubleSound);
+                gm?.ApplyDoublePointsForSeconds(doubleTime);
+                ballController?.DoubleSpeedForSeconds(doubleTime);
+            }
         }
 
         if (power == Power.Invisibility)
         {
 
         }
+
+        if (cancelPowerLoss) return;
 
         hasPower = false;
         powerSprite.sprite = null;
