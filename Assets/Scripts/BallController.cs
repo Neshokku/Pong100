@@ -10,6 +10,7 @@ public class BallController : MonoBehaviour
     private float originalGreenAuraAlpha;
 
     private List<float> doubleSpeedStacks = new List<float>();
+    private float invisibleTime = 0.0f;
 
     [SerializeField] private float initialSpeed = 1.0f;
     private float speed;
@@ -42,6 +43,7 @@ public class BallController : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip pointSound;
     [SerializeField] private AudioClip bounceSound;
+    [SerializeField] private AudioClip invisibilitySound;
 
     void Start()
     {
@@ -105,6 +107,7 @@ public class BallController : MonoBehaviour
         }
 
         HandleDoubleSpeed();
+        HandleInvisibility();
     }
 
     // resets the ball position to the center of the screen
@@ -116,6 +119,7 @@ public class BallController : MonoBehaviour
         spriteRenderer.color = Color.white;
         lastPlayerHit = null;
         ResetDoubleSpeed();
+        ResetInvisibility();
         RandomizeDirection();
     }
 
@@ -213,16 +217,65 @@ public class BallController : MonoBehaviour
 
     public void InvisibilityForSeconds(float seconds)
     {
+        if (invisibleTime <= 0.0f) StartCoroutine(FadeOutRoutine());
+        invisibleTime += seconds;
+    }
 
+    public void ResetInvisibility()
+    {
+        invisibleTime = 0.0f;
+        StartCoroutine(FadeInRoutine());
+    }
+
+    private void HandleInvisibility()
+    {
+        if (invisibleTime > 0.0f)
+        {
+            invisibleTime -= Time.deltaTime;
+            if (invisibleTime <= 0.0f)
+            {
+                ResetInvisibility();
+            }
+        }
     }
 
     private IEnumerator FadeInRoutine()
     {
-        yield return null;
+        float fadeTime = 0.3f;
+
+        float t = 0.0f;
+
+        float initialAlpha = spriteRenderer.color.a;
+        float initialGreenAuraAlpha = greenAuraRenderer.color.a;
+        float endAlpha = originalBallAlpha;
+        float endGreenAuraAlpha = originalGreenAuraAlpha;
+
+        while (t < fadeTime)
+        {
+            t += Time.deltaTime;
+            spriteRenderer.color = new(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, Mathf.Lerp(initialAlpha, endAlpha, t / fadeTime));
+            greenAuraRenderer.color = new(greenAuraRenderer.color.r, greenAuraRenderer.color.g, greenAuraRenderer.color.b, Mathf.Lerp(initialGreenAuraAlpha, endGreenAuraAlpha, t / fadeTime));
+            yield return null;
+        }
     }
 
     private IEnumerator FadeOutRoutine()
     {
-        yield return null;
+        float fadeTime = 0.3f;
+
+        float t = 0.0f;
+
+        float initialAlpha = spriteRenderer.color.a;
+        float initialGreenAuraAlpha = greenAuraRenderer.color.a;
+        float endAlpha = 0.0f;
+        float endGreenAuraAlpha = 0.0f;
+
+        while (t < fadeTime)
+        {
+            t += Time.deltaTime;
+            spriteRenderer.color = new(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, Mathf.Lerp(initialAlpha, endAlpha, t / fadeTime));
+            greenAuraRenderer.color = new(greenAuraRenderer.color.r, greenAuraRenderer.color.g, greenAuraRenderer.color.b, Mathf.Lerp(initialGreenAuraAlpha, endGreenAuraAlpha, t / fadeTime));
+            yield return null;
+        }
     }
 }

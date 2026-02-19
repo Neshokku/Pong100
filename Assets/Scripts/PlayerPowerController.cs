@@ -26,9 +26,11 @@ public class PlayerPowerController : MonoBehaviour
 
     [Header("InvisibilityConfig")]
     [SerializeField] private float invisibilityTime = 1.0f;
+    [SerializeField] private AudioClip invisibilitySound;
 
     [Header("VFX")]
     [SerializeField] private GameObject inversionVFX;
+    [SerializeField] private GameObject invisibilityVFX;
     public bool hasPower { get; private set; } = false;
     public Power power { get; private set; }
     
@@ -116,7 +118,17 @@ public class PlayerPowerController : MonoBehaviour
 
         if (power == Power.Invisibility)
         {
+            BallController ballController = FindFirstObjectByType<BallController>();
 
+            if (ballController == null || ballController.isOutside)
+            {
+                cancelPowerLoss = true;
+            }
+            else
+            {
+                ballController?.InvisibilityForSeconds(invisibilityTime);
+                Instantiate(invisibilityVFX, ballController.gameObject.transform.position, Quaternion.identity);
+            }
         }
 
         if (cancelPowerLoss) return;
