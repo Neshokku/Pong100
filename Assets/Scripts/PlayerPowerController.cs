@@ -128,6 +128,7 @@ public class PlayerPowerController : MonoBehaviour
             {
                 ballController?.InvisibilityForSeconds(invisibilityTime);
                 Instantiate(invisibilityVFX, ballController.gameObject.transform.position, Quaternion.identity);
+                mainSource.PlayOneShot(invisibilitySound);
             }
         }
 
