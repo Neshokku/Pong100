@@ -16,7 +16,7 @@ public class BallController : MonoBehaviour
     private float speed;
     [SerializeField] private float onCollisionSpeedAdd = 0.2f;
     [SerializeField] private float maxSpeed = 10.0f;
-    [SerializeField] private float intangibilityTimeOnHit = 0.3f;
+    [SerializeField] private float intangibilityTimeOnHit = 0.8f;
 
     [Header("Limits")]
     [SerializeField] private float right = 9.0f;
@@ -132,7 +132,7 @@ public class BallController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Paddle") && !IsIntangible())
+        if (collision.gameObject.CompareTag("Paddle") && !(IsIntangible() && collision.gameObject != lastPlayerHit))
         {
             float hitPoint = transform.position.y - collision.transform.position.y;
             float paddleHeight = collision.collider.bounds.size.y;
