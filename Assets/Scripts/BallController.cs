@@ -203,12 +203,11 @@ public class BallController : MonoBehaviour
             if (doubleSpeedStacks[i] <= 0.0f)
             {
                 doubleSpeedStacks.RemoveAt(i);
+                if (doubleSpeedStacks.Count <= 0)
+                {
+                    ResetDoubleSpeed();
+                }
             }
-        }
-
-        if (doubleSpeedStacks.Count <= 0)
-        {
-            ResetDoubleSpeed();
         }
     }
 

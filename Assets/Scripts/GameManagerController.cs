@@ -64,7 +64,6 @@ public class GameManagerController : MonoBehaviour
     {
         if (gameUp) WinCheck();
         HandleDoublePointTimers();
-
     }
 
     public void AddScoreToPlayer1(int scoreToAdd)
@@ -231,12 +230,11 @@ public class GameManagerController : MonoBehaviour
             if (doublePointStacks[i] <= 0.0f)
             {
                 doublePointStacks.RemoveAt(i);
+                if (doublePointStacks.Count <= 0)
+                {
+                    ResetDoublePoints();
+                }
             }
-        }
-
-        if (doublePointStacks.Count <= 0)
-        {
-            ResetDoublePoints();
         }
     }
 
