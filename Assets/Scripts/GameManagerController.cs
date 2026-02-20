@@ -7,12 +7,24 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
+
+public enum MatchType
+{
+    PlayerVSPlayer,
+    PlayerVSCPU
+}
+
+
+
 public class GameManagerController : MonoBehaviour
 {
-
     [Header("Actors")]
-    [SerializeField] PlayerController player1Controller;
-    [SerializeField] PlayerController player2Controller;
+    PlayerController player1Controller;
+    PlayerController player2Controller;
+    [SerializeField] GameObject player1GameObject;
+    [SerializeField] GameObject player2GameObject;
+    [SerializeField] Transform player1Spawn;
+    [SerializeField] Transform player2Spawn;
     [SerializeField] GameObject ballPrefab;
     private BallController ballController;
 
@@ -30,6 +42,9 @@ public class GameManagerController : MonoBehaviour
     [SerializeField] private GameObject mobileControls;
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject allUI;
+    [SerializeField] private GameObject pauseButton;
+    [SerializeField] private ControlSet p1ControlSet;
+    [SerializeField] private ControlSet p2ControlSet;
 
     [Header("Config")]
     [SerializeField] private float timeBetweenMultiplierIncreases = 20.0f;
@@ -52,6 +67,8 @@ public class GameManagerController : MonoBehaviour
     private void Awake()
     {
         audioSource = gameObject.GetComponent<AudioSource>();
+        player1Controller = Instantiate(player1GameObject, new Vector3(player1Spawn.position.x, player1Spawn.position.y), Quaternion.identity).GetComponent<PlayerController>();
+        player2Controller = Instantiate(player2GameObject, new Vector3(player2Spawn.position.x, player2Spawn.position.y), Quaternion.identity).GetComponent<PlayerController>();
     }
 
     void Start()
@@ -60,6 +77,7 @@ public class GameManagerController : MonoBehaviour
         StartCoroutine(StartGameRoutine());
         StartCoroutine(MultiplierIncreaseRoutine());
     }
+
     private void Update()
     {
         if (gameUp) WinCheck();
@@ -140,7 +158,9 @@ public class GameManagerController : MonoBehaviour
         WriteMultiplierText();
         player1ScoreUI.WriteScore();
         player2ScoreUI.WriteScore();
-        mobileControls.SetActive(true);
+        p1ControlSet.SetActiveControls(GameSettings.instance.p1ControlType);
+        p2ControlSet.SetActiveControls(GameSettings.instance.p2ControlType);
+        pauseButton.SetActive(true);
         gameUp = true;
     }
 
