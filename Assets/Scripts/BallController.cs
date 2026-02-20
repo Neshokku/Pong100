@@ -139,7 +139,7 @@ public class BallController : MonoBehaviour
             float normalizedHitPoint = hitPoint / (paddleHeight / 2);
 
             direction = new Vector2(
-                direction.x > 0 ? -1 : 1,
+                transform.position.x > 0 ? -1 : 1,
                 normalizedHitPoint
             ).normalized;
 
