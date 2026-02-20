@@ -305,7 +305,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BallController
   initialSpeed: 6
-  onCollisionSpeedAdd: 1
+  onCollisionSpeedAdd: 0.8
   maxSpeed: 12
   intangibilityTimeOnHit: 0.8
   right: 9
