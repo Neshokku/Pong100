@@ -4,7 +4,8 @@ using UnityEngine.SceneManagement;
 public enum MenuScreens
 {
     Main,
-    Settings
+    Settings,
+    ControlSelection
 }
 
 public class MainMenuController : MonoBehaviour
@@ -14,6 +15,7 @@ public class MainMenuController : MonoBehaviour
     [Header("Screens")]
     [SerializeField] GameObject main;
     [SerializeField] GameObject settings;
+    [SerializeField] GameObject controlSelection;
 
     private void Awake()
     {
@@ -29,11 +31,11 @@ public class MainMenuController : MonoBehaviour
     {
         main.SetActive(screen == MenuScreens.Main);
         settings.SetActive(screen == MenuScreens.Settings);
+        controlSelection.SetActive(screen == MenuScreens.ControlSelection);
     }
 
     public void SetScreen(int screen)
     {
-        main.SetActive(screen == (int)MenuScreens.Main);
-        settings.SetActive(screen == (int)MenuScreens.Settings);
+        SetScreen((MenuScreens)(screen));
     }
 }

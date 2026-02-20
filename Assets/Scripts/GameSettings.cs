@@ -41,10 +41,22 @@ public class GameSettings : MonoBehaviour
         }
     }
 
-    private void SaveSettings()
+    public void SetControlTypeForPlayer(PlayerID playerId, ControlType controlType)
     {
-        PlayerPrefs.SetInt("P1ControlType", (int)p1ControlType);
-        PlayerPrefs.SetInt("P2ControlType", (int)p2ControlType);
+        if (playerId == PlayerID.Player1)
+        {
+            SetP1ControlType(controlType);
+        } else if (playerId == PlayerID.Player2)
+        {
+            SetP2ControlType(controlType);
+        }
+    }
+
+    public ControlType GetPlayerControlType(PlayerID playerID)
+    {
+        if (playerID == PlayerID.Player1) return p1ControlType;
+        if (playerID == PlayerID.Player2) return p2ControlType;
+        return ControlType.PowerCenter;
     }
 
     public void SetP1ControlType(ControlType controlType)
