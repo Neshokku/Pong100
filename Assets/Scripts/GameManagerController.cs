@@ -59,7 +59,7 @@ public class GameManagerController : MonoBehaviour
 
     private bool paused = false;
 
-    private bool gameUp = false;
+    public bool gameUp { get; private set; } = false;
 
     // Components
     private AudioSource audioSource;

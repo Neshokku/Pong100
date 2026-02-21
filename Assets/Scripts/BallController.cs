@@ -115,13 +115,14 @@ public class BallController : MonoBehaviour
     // resets the ball position to the center of the screen
     private void ResetBall()
     {
+        if (!gm.gameUp) return;
+
         transform.position = Vector2.zero;
         speed = initialSpeed;
         isOutside = false;
         spriteRenderer.color = Color.white;
         lastPlayerHit = null;
         ResetDoubleSpeed();
-        ResetInvisibility();
         RandomizeDirection();
     }
 
