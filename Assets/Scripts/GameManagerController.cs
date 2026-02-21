@@ -58,6 +58,7 @@ public class GameManagerController : MonoBehaviour
     private List<float> doublePointStacks = new List<float>();
 
     private bool paused = false;
+    private bool isRatioSmall = false;
 
     public bool gameUp { get; private set; } = false;
 
@@ -67,6 +68,7 @@ public class GameManagerController : MonoBehaviour
     private void Awake()
     {
         audioSource = gameObject.GetComponent<AudioSource>();
+        AdjustForRatio();
         player1Controller = Instantiate(player1GameObject, new Vector3(player1Spawn.position.x, player1Spawn.position.y), Quaternion.identity).GetComponent<PlayerController>();
         player2Controller = Instantiate(player2GameObject, new Vector3(player2Spawn.position.x, player2Spawn.position.y), Quaternion.identity).GetComponent<PlayerController>();
     }
@@ -161,7 +163,19 @@ public class GameManagerController : MonoBehaviour
         p1ControlSet.SetActiveControls(GameSettings.instance.p1ControlType);
         p2ControlSet.SetActiveControls(GameSettings.instance.p2ControlType);
         pauseButton.SetActive(true);
+        if (isRatioSmall) ballController.ApplyRatioFix();
         gameUp = true;
+    }
+
+    private void AdjustForRatio()
+    {
+        float ratio = Screen.width / Screen.height;
+        if (ratio < 1.8f)
+        {
+            player1Spawn.position = new Vector2(5.5f * Mathf.Sign(player1Spawn.position.x), player1Spawn.position.y);
+            player2Spawn.position = new Vector2(5.5f * Mathf.Sign(player2Spawn.position.x), player2Spawn.position.y);
+            isRatioSmall = true;
+        }
     }
 
     private void WriteMultiplierText()

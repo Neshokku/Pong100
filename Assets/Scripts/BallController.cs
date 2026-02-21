@@ -283,4 +283,13 @@ public class BallController : MonoBehaviour
             yield return null;
         }
     }
+
+    public void ApplyRatioFix() 
+    {
+        float ratioMultiplier = 11.0f / 14.0f;
+
+        initialSpeed *= ratioMultiplier;
+        maxSpeed *= ratioMultiplier;
+        onCollisionSpeedAdd *= ratioMultiplier;
+    }
 }
