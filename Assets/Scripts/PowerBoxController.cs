@@ -20,17 +20,15 @@ public class PowerBoxController : MonoBehaviour
         SetSpriteToPower();
     }
 
+    public void SetPower(Power newPower)
+    {
+        power = newPower;
+        SetSpriteToPower();
+    }
+
     private void SetSpriteToPower()
     {
         powerSpriteRenderer.sprite = powerSpriteData.GetSprite(power);
-    }
-
-    public void SetRandomPower()
-    {
-        Power[] values = (Power[])System.Enum.GetValues(typeof(Power));
-        power = values[Random.Range(0, values.Length)];
-
-        SetSpriteToPower();
     }
 
     public void SetBoxListReference(List<GameObject> list)

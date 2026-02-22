@@ -6,7 +6,8 @@ public enum MenuScreens
     Main,
     Settings,
     ControlSelection,
-    Audio
+    Audio,
+    PowerSelection
 }
 
 public class MainMenuController : MonoBehaviour
@@ -18,6 +19,7 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] GameObject settings;
     [SerializeField] GameObject controlSelection;
     [SerializeField] GameObject audioScreen;
+    [SerializeField] GameObject powerSelection;
 
     private void Awake()
     {
@@ -35,6 +37,7 @@ public class MainMenuController : MonoBehaviour
         settings.SetActive(screen == MenuScreens.Settings);
         controlSelection.SetActive(screen == MenuScreens.ControlSelection);
         audioScreen.SetActive(screen == MenuScreens.Audio);
+        powerSelection.SetActive(screen == MenuScreens.PowerSelection);
     }
 
     public void SetScreen(int screen)

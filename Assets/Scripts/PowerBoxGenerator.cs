@@ -21,6 +21,7 @@ public class PowerBoxGenerator : MonoBehaviour
 
     // Variables
     private List<GameObject> boxList = new List<GameObject>();
+    private List<Power> availablePowers = new List<Power>();
 
 
     void Awake()
@@ -36,7 +37,38 @@ public class PowerBoxGenerator : MonoBehaviour
 
     void Start()
     {
+        GenerateAvailableList();
         StartCoroutine(nameof(StartSpawning));
+    }
+
+    private void GenerateAvailableList()
+    {
+        Power[] allPowers = (Power[])System.Enum.GetValues(typeof(Power));
+
+        foreach (Power power in allPowers)
+        {
+            if (PlayerPrefs.HasKey(GetPrefNameFromPower(power)))
+            {
+                if (PlayerPrefs.GetInt(GetPrefNameFromPower(power)) != 0)
+                {
+                    availablePowers.Add(power);
+                }
+            } else
+            {
+                PlayerPrefs.SetInt(GetPrefNameFromPower(power), 1);
+            }
+        }
+    }
+
+    private string GetPrefNameFromPower(Power power)
+    {
+        return power.ToString() + "Enabled";
+    }
+
+    private Power GetRandomPowerFromAvailable()
+    {
+        int index = Random.Range(0, availablePowers.Count);
+        return availablePowers[index];
     }
 
     IEnumerator StartSpawning()
@@ -63,7 +95,7 @@ public class PowerBoxGenerator : MonoBehaviour
         PowerBoxController boxController = newBox.GetComponent<PowerBoxController>();
         if (boxController != null)
         {
-            boxController.SetRandomPower();
+            boxController.SetPower(GetRandomPowerFromAvailable());
             boxController.SetBoxListReference(boxList);
         }
         boxList.Add(newBox);
