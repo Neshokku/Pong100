@@ -38,7 +38,7 @@ public class PowerBoxGenerator : MonoBehaviour
     void Start()
     {
         GenerateAvailableList();
-        StartCoroutine(nameof(StartSpawning));
+        if (availablePowers.Count > 0) StartCoroutine(nameof(StartSpawning));
     }
 
     private void GenerateAvailableList()
