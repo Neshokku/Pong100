@@ -9,10 +9,16 @@ public class PortalController : MonoBehaviour
     [SerializeField] private AudioClip spawnSound;
 
     private AudioSource audioSource;
+    private Collider2D portalCollider;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+        portalCollider = GetComponent<Collider2D>();
+    }
 
     private void Start()
     {
-        audioSource = GetComponent<AudioSource>();
         audioSource.PlayOneShot(spawnSound);
         Invoke(nameof(Dissapear), lifeTime);
     }
@@ -25,8 +31,9 @@ public class PortalController : MonoBehaviour
             ballController.SetDirection(new Vector2(transform.position.x < 0 ? 1 : -1, ballController.direction.y));
             audioSource.PlayOneShot(transportSound);
             shrinkAnim.Animate();
+            portalCollider.enabled = false;
         }
-    }
+    }   
 
     private void Dissapear()
     {
