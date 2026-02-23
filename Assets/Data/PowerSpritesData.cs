@@ -8,7 +8,8 @@ public enum Power
     Inversion,
     Shock,
     Double,
-    Invisibility
+    Invisibility,
+    Telekinesis
 }
 
 [System.Serializable]
