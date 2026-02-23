@@ -295,4 +295,44 @@ public class BallController : MonoBehaviour
         maxSpeed *= ratioMultiplier;
         onCollisionSpeedAdd *= ratioMultiplier;
     }
+
+
+    public void TelekinesisBind(Transform playerToFollow)
+    {
+        StartCoroutine(TelekinesisRoutine(playerToFollow));
+    }
+
+    private IEnumerator TelekinesisRoutine(Transform playerToFollow)
+    {
+        float telekinesisStrength = 5f;
+        float telekinesisTime = 2.0f;
+
+        float t = 0.0f;
+
+        while (t < telekinesisTime)
+        {
+            t += Time.deltaTime;
+
+            if (transform.position.y < playerToFollow.position.y)
+            {
+                Vector2 newDirection = new Vector2(direction.x, direction.y + telekinesisStrength * Time.deltaTime).normalized;
+                if (Mathf.Abs(newDirection.y) > Mathf.Abs(newDirection.x)) newDirection = new Vector2(newDirection.x, Mathf.Abs(newDirection.x) * Mathf.Sign(newDirection.y)).normalized;
+                direction = newDirection;
+            } else
+            {
+                Vector2 newDirection = new Vector2(direction.x, direction.y - telekinesisStrength * Time.deltaTime).normalized;
+                if (Mathf.Abs(newDirection.y) > Mathf.Abs(newDirection.x)) newDirection = new Vector2(newDirection.x, Mathf.Abs(newDirection.x) * Mathf.Sign(newDirection.y)).normalized;
+                direction = newDirection;
+            }
+
+            if (isOutside)
+            {
+                yield break;
+            }
+
+            yield return null;
+        }
+
+        
+    }
 }

@@ -136,6 +136,20 @@ public class PlayerPowerController : MonoBehaviour
             }
         }
 
+        if (power == Power.Telekinesis)
+        {
+            BallController ballController = FindFirstObjectByType<BallController>();
+
+            if (ballController == null || ballController.isOutside)
+            {
+                cancelPowerLoss = true;
+            }
+            else
+            {
+                ballController.TelekinesisBind(transform);
+            }
+        }
+
         if (cancelPowerLoss)
         {
             mainSource.PlayOneShot(failPowerSound);
