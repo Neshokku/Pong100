@@ -39,6 +39,7 @@ public class BallController : MonoBehaviour
     private BoxCollider2D boxCollider;
     private GameManagerController gm;
     public GameObject lastPlayerHit { get; private set; }
+    private GameObject invisibilityByPlayer;
     [Header("Sounds")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip pointSound;
@@ -99,13 +100,13 @@ public class BallController : MonoBehaviour
         if (transform.position.y + boxCollider.size.y / 2 > up && Mathf.Sign(direction.y) > 0)
         {
             direction = new Vector2(direction.x, direction.y * -1);
-            audioSource.PlayOneShot(bounceSound);
+            if (!isOutside) audioSource.PlayOneShot(bounceSound);
         }
 
         if (transform.position.y - boxCollider.size.y / 2 < down && Mathf.Sign(direction.y) < 0)
         {
             direction = new Vector2(direction.x, direction.y * -1);
-            audioSource.PlayOneShot(bounceSound);
+            if (!isOutside) audioSource.PlayOneShot(bounceSound);
         }
 
         HandleDoubleSpeed();
@@ -157,7 +158,7 @@ public class BallController : MonoBehaviour
             lastPlayerHit = collision.gameObject;
 
             IntangibleForSeconds(intangibilityTimeOnHit);
-            ResetInvisibility();
+            if (collision.gameObject != invisibilityByPlayer) ResetInvisibility();
         }
 
         audioSource.PlayOneShot(bounceSound);
@@ -220,15 +221,17 @@ public class BallController : MonoBehaviour
         }
     }
 
-    public void InvisibilityForSeconds(float seconds)
+    public void InvisibilityForSeconds(float seconds, GameObject player)
     {
         if (invisibleTime <= 0.0f) StartCoroutine(FadeOutRoutine());
         invisibleTime += seconds;
+        invisibilityByPlayer = player;
     }
 
     public void ResetInvisibility()
     {
         invisibleTime = 0.0f;
+        invisibilityByPlayer = null;
         StartCoroutine(FadeInRoutine());
     }
 
