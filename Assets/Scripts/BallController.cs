@@ -29,6 +29,8 @@ public class BallController : MonoBehaviour
     public bool isOutside { get; private set; } = false;
     private int intangibleStacks = 0;
 
+    public bool isOnTelekinesis { get; private set; } = false;
+
     [Header("References")]
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] GameObject greenAura;
@@ -304,6 +306,8 @@ public class BallController : MonoBehaviour
 
     private IEnumerator TelekinesisRoutine(Transform playerToFollow)
     {
+        isOnTelekinesis = true;
+
         float telekinesisStrength = 5f;
         float telekinesisTime = 2.0f;
 
@@ -312,6 +316,12 @@ public class BallController : MonoBehaviour
         while (t < telekinesisTime)
         {
             t += Time.deltaTime;
+
+            if (isOutside)
+            {
+                isOnTelekinesis = false;
+                yield break;
+            }
 
             if (transform.position.y < playerToFollow.position.y)
             {
@@ -325,14 +335,9 @@ public class BallController : MonoBehaviour
                 direction = newDirection;
             }
 
-            if (isOutside)
-            {
-                yield break;
-            }
-
             yield return null;
         }
 
-        
+        isOnTelekinesis = false;
     }
 }

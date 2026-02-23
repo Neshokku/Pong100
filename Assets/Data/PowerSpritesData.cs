@@ -9,7 +9,8 @@ public enum Power
     Shock,
     Double,
     Invisibility,
-    Telekinesis
+    Telekinesis,
+    Soul
 }
 
 [System.Serializable]

@@ -219,6 +219,7 @@ MonoBehaviour:
   invisibilitySound: {fileID: 8300000, guid: dc73c6ec3b9bebc4287ef4a2e9c13dc8, type: 3}
   inversionVFX: {fileID: 7150466498841561496, guid: 2665eb47c5267614fb8a5588ac31b981, type: 3}
   invisibilityVFX: {fileID: 6891106393711654464, guid: 8bee5df76cd8d7a4e9d185e61315bf95, type: 3}
+  telekinesisVFX: {fileID: 3878079847971735061, guid: 07d4e349004d30a4fab49de6ee8a81e5, type: 3}
 --- !u!50 &6789559230427563963
 Rigidbody2D:
   serializedVersion: 5

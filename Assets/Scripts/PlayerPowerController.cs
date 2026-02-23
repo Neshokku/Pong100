@@ -32,6 +32,7 @@ public class PlayerPowerController : MonoBehaviour
     [Header("VFX")]
     [SerializeField] private GameObject inversionVFX;
     [SerializeField] private GameObject invisibilityVFX;
+    [SerializeField] private GameObject telekinesisVFX;
     public bool hasPower { get; private set; } = false;
     public Power power { get; private set; }
     
@@ -140,13 +141,14 @@ public class PlayerPowerController : MonoBehaviour
         {
             BallController ballController = FindFirstObjectByType<BallController>();
 
-            if (ballController == null || ballController.isOutside)
+            if (ballController == null || ballController.isOutside || ballController.isOnTelekinesis)
             {
                 cancelPowerLoss = true;
             }
             else
             {
                 ballController.TelekinesisBind(transform);
+                Instantiate(telekinesisVFX, ballController.transform);
             }
         }
 
