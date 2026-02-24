@@ -49,4 +49,34 @@ public class TelekinesisOverlay : MonoBehaviour
             yield return null;
         }
     }
+
+    public void FadeOut()
+    {
+        StartCoroutine(FadeOutRoutine(bigOverlayRenderer));
+        StartCoroutine(FadeOutRoutine(smallOverlayRenderer));
+    }
+
+    private IEnumerator FadeOutRoutine(SpriteRenderer renderer)
+    {
+        Transform overlayTransform = renderer.transform;
+        Quaternion startRotation = Quaternion.identity;
+        Quaternion endRotation = Quaternion.Euler(0.0f, 0.0f, 90.0f);
+
+        renderer.color = Color.white;
+        overlayTransform.rotation = startRotation;
+
+        float t = 0.0f;
+
+        while (t < appearTime)
+        {
+            t += Time.deltaTime;
+
+            renderer.color = Color.Lerp(Color.white, new(.0f, .0f, .0f, .0f), t / appearTime);
+            overlayTransform.rotation = Quaternion.LerpUnclamped(startRotation, endRotation, curve.Evaluate(t / appearTime));
+
+            yield return null;
+        }
+
+        Destroy(gameObject);
+    }
 }

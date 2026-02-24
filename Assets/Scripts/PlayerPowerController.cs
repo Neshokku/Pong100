@@ -33,6 +33,7 @@ public class PlayerPowerController : MonoBehaviour
     [SerializeField] private GameObject inversionVFX;
     [SerializeField] private GameObject invisibilityVFX;
     [SerializeField] private GameObject telekinesisVFX;
+    [SerializeField] private GameObject telekinesisSignalVFX;
     public bool hasPower { get; private set; } = false;
     public Power power { get; private set; }
     
@@ -147,8 +148,12 @@ public class PlayerPowerController : MonoBehaviour
             }
             else
             {
-                ballController.TelekinesisBind(transform);
-                Instantiate(telekinesisVFX, ballController.transform);
+                GameObject vfx = Instantiate(telekinesisVFX, ballController.transform);
+                GameObject signal = Instantiate(telekinesisSignalVFX, transform);
+                signal.transform.localPosition = new Vector2(-Mathf.Sign(transform.position.x) * 1.0f, 0.0f);
+                signal.transform.localScale = new Vector3(-Mathf.Sign(transform.position.x), 1.0f, 1.0f);
+                TelekinesisOverlay vfxComponent = vfx.GetComponent< TelekinesisOverlay>();
+                ballController.TelekinesisBind(transform, vfxComponent, signal);
             }
         }
 

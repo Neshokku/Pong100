@@ -299,16 +299,16 @@ public class BallController : MonoBehaviour
     }
 
 
-    public void TelekinesisBind(Transform playerToFollow)
+    public void TelekinesisBind(Transform playerToFollow, TelekinesisOverlay overlay, GameObject telekinesisSignal)
     {
-        StartCoroutine(TelekinesisRoutine(playerToFollow));
+        StartCoroutine(TelekinesisRoutine(playerToFollow, overlay, telekinesisSignal));
     }
 
-    private IEnumerator TelekinesisRoutine(Transform playerToFollow)
+    private IEnumerator TelekinesisRoutine(Transform playerToFollow, TelekinesisOverlay overlay, GameObject telekinesisSignal)
     {
         isOnTelekinesis = true;
 
-        float telekinesisStrength = 5f;
+        float telekinesisStrength = speed;
         float telekinesisTime = 2.0f;
 
         float t = 0.0f;
@@ -320,24 +320,32 @@ public class BallController : MonoBehaviour
             if (isOutside)
             {
                 isOnTelekinesis = false;
+                Destroy(overlay.gameObject);
+                Destroy(telekinesisSignal);
                 yield break;
             }
 
+            Vector2 newDirection = Vector2.zero;
+            float tolerance = 0.5f;
+
             if (transform.position.y < playerToFollow.position.y)
             {
-                Vector2 newDirection = new Vector2(direction.x, direction.y + telekinesisStrength * Time.deltaTime).normalized;
-                if (Mathf.Abs(newDirection.y) > Mathf.Abs(newDirection.x)) newDirection = new Vector2(newDirection.x, Mathf.Abs(newDirection.x) * Mathf.Sign(newDirection.y)).normalized;
-                direction = newDirection;
+                newDirection = new Vector2(direction.x, direction.y + telekinesisStrength * Time.deltaTime).normalized;
             } else
             {
-                Vector2 newDirection = new Vector2(direction.x, direction.y - telekinesisStrength * Time.deltaTime).normalized;
-                if (Mathf.Abs(newDirection.y) > Mathf.Abs(newDirection.x)) newDirection = new Vector2(newDirection.x, Mathf.Abs(newDirection.x) * Mathf.Sign(newDirection.y)).normalized;
-                direction = newDirection;
+                newDirection = new Vector2(direction.x, direction.y - telekinesisStrength * Time.deltaTime).normalized;
             }
+
+            if (Mathf.Abs(transform.position.y - playerToFollow.position.y) <= tolerance) newDirection.y = 0;
+
+            if (Mathf.Abs(newDirection.y) > Mathf.Abs(newDirection.x)) newDirection = new Vector2(newDirection.x, Mathf.Abs(newDirection.x) * Mathf.Sign(newDirection.y)).normalized;
+            direction = newDirection;
 
             yield return null;
         }
 
         isOnTelekinesis = false;
+        overlay.FadeOut();
+        Destroy(telekinesisSignal);
     }
 }
