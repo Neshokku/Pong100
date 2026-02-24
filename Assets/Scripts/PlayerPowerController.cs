@@ -29,6 +29,9 @@ public class PlayerPowerController : MonoBehaviour
     [SerializeField] private float invisibilityTime = 1.0f;
     [SerializeField] private AudioClip invisibilitySound;
 
+    [Header("TelekinesisConfig")]
+    [SerializeField] private AudioClip telekinesisSound;
+
     [Header("VFX")]
     [SerializeField] private GameObject inversionVFX;
     [SerializeField] private GameObject invisibilityVFX;
@@ -154,6 +157,7 @@ public class PlayerPowerController : MonoBehaviour
                 signal.transform.localScale = new Vector3(-Mathf.Sign(transform.position.x), 1.0f, 1.0f);
                 TelekinesisOverlay vfxComponent = vfx.GetComponent< TelekinesisOverlay>();
                 ballController.TelekinesisBind(transform, vfxComponent, signal);
+                mainSource.PlayOneShot(telekinesisSound);
             }
         }
 
