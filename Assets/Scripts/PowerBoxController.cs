@@ -28,11 +28,11 @@ public class PowerBoxController : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent<BallController>(out BallController ballController))
         {
-            if (ballController.lastPlayerHit == null) return;
-            if (container.lockPower) return;
+            if (ballController.lastPlayerHit == null || container.lockPower) return;
 
             PlayerPowerController playerPowerController = ballController.lastPlayerHit.GetComponent<PlayerPowerController>();
-            if (playerPowerController != null && !playerPowerController.powerContainer.hasPower)
+
+            if (playerPowerController != null && !playerPowerController.powerContainer.hasPower && !playerPowerController.soulDeployed)
             {
                 playerPowerController.powerContainer.SetPower(container.power);
                 Dissapear();
