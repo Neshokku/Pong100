@@ -27,7 +27,8 @@ public class GameManagerController : MonoBehaviour
     [SerializeField] Transform player2Spawn;
     [SerializeField] GameObject ballPrefab;
     private BallController ballController;
-
+    private PlayerPowerController p1PowerController;
+    private PlayerPowerController p2PowerController;
 
 
     [Header("References")]
@@ -71,6 +72,8 @@ public class GameManagerController : MonoBehaviour
         AdjustForRatio();
         player1Controller = Instantiate(player1GameObject, new Vector3(player1Spawn.position.x, player1Spawn.position.y), Quaternion.identity).GetComponent<PlayerController>();
         player2Controller = Instantiate(player2GameObject, new Vector3(player2Spawn.position.x, player2Spawn.position.y), Quaternion.identity).GetComponent<PlayerController>();
+        p1PowerController = player1Controller.gameObject.GetComponent<PlayerPowerController>();
+        p2PowerController = player2Controller.gameObject.GetComponent<PlayerPowerController>();
     }
 
     void Start()
@@ -84,6 +87,19 @@ public class GameManagerController : MonoBehaviour
     {
         if (gameUp) WinCheck();
         HandleDoublePointTimers();
+    }
+
+    public PlayerPowerController GetPowerControllerFromPlayer(PlayerID playerID)
+    {
+        if (playerID == PlayerID.Player1)
+        {
+            return p1PowerController;
+        } else if (playerID == PlayerID.Player2)
+        {
+            return p2PowerController;
+        }
+
+        return null;
     }
 
     public void AddScoreToPlayer1(int scoreToAdd)

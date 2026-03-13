@@ -19,9 +19,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("VFX")]
     [SerializeField] GameObject deathVFX;
-
-    private bool canMove = true;
-
+    private float movementRestrictedForSeconds = 0.0f;
 
     void Awake()
     {
@@ -30,9 +28,20 @@ public class PlayerController : MonoBehaviour
         paddleInput = GetComponent<PaddleInput>();
     }
 
+    private void Update()
+    {
+        if (movementRestrictedForSeconds > 0.0f)
+        {
+            movementRestrictedForSeconds -= Time.deltaTime;
+        } else if (movementRestrictedForSeconds < 0.0f)
+        {
+            movementRestrictedForSeconds = 0.0f;
+        }
+    }
+
     void FixedUpdate()
     {
-        if (canMove)
+        if (movementRestrictedForSeconds <= 0.0f)
         {
             if (paddleInput.input.y > 0 && GetUpperY() < maxY)
             {
@@ -64,15 +73,7 @@ public class PlayerController : MonoBehaviour
 
     public void DisableMovementForSeconds(float seconds)
     {
-        StopAllCoroutines();
-        StartCoroutine(DisableMovementForSecondsCoroutine(seconds));
-    }
-
-    private IEnumerator DisableMovementForSecondsCoroutine(float seconds)
-    {
-        canMove = false;
-        yield return new WaitForSeconds(seconds);
-        canMove = true;
+        movementRestrictedForSeconds += seconds;
     }
 
     public void Lose()

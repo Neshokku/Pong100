@@ -1,34 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(PowerContainer))]
 public class PowerBoxController : MonoBehaviour
 {
-    [Header("Configuration")]
-    [SerializeField] private Power power;
-
-    [Header("Components")]
-    [SerializeField] SpriteRenderer powerSpriteRenderer;
-
-    [Header("Data")]
-    [SerializeField] PowerSpritesData powerSpriteData;
-
+    public PowerContainer container { get; private set; }
 
     private List<GameObject> boxListReference;
 
-    void Start()
+    private void Awake()
     {
-        SetSpriteToPower();
-    }
-
-    public void SetPower(Power newPower)
-    {
-        power = newPower;
-        SetSpriteToPower();
-    }
-
-    private void SetSpriteToPower()
-    {
-        powerSpriteRenderer.sprite = powerSpriteData.GetSprite(power);
+        container = GetComponent<PowerContainer>();
     }
 
     public void SetBoxListReference(List<GameObject> list)
@@ -47,11 +29,12 @@ public class PowerBoxController : MonoBehaviour
         if (collision.gameObject.TryGetComponent<BallController>(out BallController ballController))
         {
             if (ballController.lastPlayerHit == null) return;
+            if (container.lockPower) return;
 
             PlayerPowerController playerPowerController = ballController.lastPlayerHit.GetComponent<PlayerPowerController>();
-            if (playerPowerController != null && !playerPowerController.hasPower)
+            if (playerPowerController != null && !playerPowerController.powerContainer.hasPower)
             {
-                playerPowerController.SetPower(power);
+                playerPowerController.powerContainer.SetPower(container.power);
                 Dissapear();
             }
         }

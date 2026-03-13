@@ -3,14 +3,17 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(PaddleInput))]
+[RequireComponent(typeof(PowerContainer))]
 public class PlayerPowerController : MonoBehaviour
 {
+    public PowerContainer powerContainer { get; private set; }
+
+    [SerializeField] private PlayerID playerID;
+
     [SerializeField] private AudioSource mainSource;
     [SerializeField] private AudioClip failPowerSound;
 
     [Header("Components")]
-    [SerializeField] SpriteRenderer powerSprite;
-    [SerializeField] PowerSpritesData powerSpritesData;
     private PaddleInput paddleInput;
 
     [Header("PortalConfig")]
@@ -32,18 +35,25 @@ public class PlayerPowerController : MonoBehaviour
     [Header("TelekinesisConfig")]
     [SerializeField] private AudioClip telekinesisSound;
 
+    [Header("SoulConfig")]
+    [SerializeField] private AudioClip soulSound;
+
+
     [Header("VFX")]
     [SerializeField] private GameObject inversionVFX;
     [SerializeField] private GameObject invisibilityVFX;
     [SerializeField] private GameObject telekinesisVFX;
     [SerializeField] private GameObject telekinesisSignalVFX;
-    public bool hasPower { get; private set; } = false;
-    public Power power { get; private set; }
-    
+    [SerializeField] private GameObject movingSoulVFX;
+    [SerializeField] private GameObject soulBoxVFX;
+
+    public bool soulDeployed = false;
+
 
     private void Awake()
     {
         paddleInput = GetComponent<PaddleInput>();
+        powerContainer = GetComponent<PowerContainer>();
     }
 
     private void Start()
@@ -61,47 +71,79 @@ public class PlayerPowerController : MonoBehaviour
         return transform.position.x < 0;
     }
 
-    public void SetPower(Power power)
-    {
-        hasPower = true;
-        this.power = power;
-        powerSprite.sprite = powerSpritesData.GetSprite(power);
-    }
 
     IEnumerator DoublePowerRoutine()
     {
         yield return new WaitForSeconds(doubleTime);
     }
 
+    private void OnSoulCollision(Power power, Vector3 position)
+    {
+        StartCoroutine(OnSoulCollisionRoutine(power, position));
+    }
+
+    private IEnumerator OnSoulCollisionRoutine(Power power, Vector3 position)
+    {
+        GameObject newSoulBox = Instantiate(soulBoxVFX, position, Quaternion.identity);
+        PowerContainer soulBoxContainer = newSoulBox.GetComponent<PowerContainer>();
+        soulBoxContainer.SetPower(power);
+
+        Vector3 startPos = position;
+        Vector3 endPos = transform.position;
+
+        AnimationCurve easeCurve = AnimationCurve.EaseInOut(0.0f, 0.0f, 1.0f, 1.0f);
+
+        float duration = 1.0f;
+        float t = 0;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            endPos = transform.position;
+            newSoulBox.transform.position = Vector3.Lerp(startPos, endPos, easeCurve.Evaluate(t / duration));
+            yield return null;
+        }
+
+        Destroy(newSoulBox);
+        powerContainer.SetPower(power);
+        soulDeployed = false;
+
+    }
+
     public void UsePower()
     {
-        if (!hasPower) return;
+        if (!powerContainer.hasPower) return;
+
+        if (soulDeployed) return;
+        if (powerContainer.lockPower) return;
 
         bool cancelPowerLoss = false;
+        bool resetPower = true;
 
-        if (power == Power.Inversion)
+        if (powerContainer.power == Power.Inversion)
         {
             BallController ballController = FindFirstObjectByType<BallController>();
 
             if (ballController == null || ballController.isOutside)
             {
                 cancelPowerLoss = true;
-            } else
+            }
+            else
             {
                 Instantiate(inversionVFX, ballController.gameObject.transform.position, Quaternion.identity);
                 ballController.SetDirection(new Vector2(ballController.direction.x, -(ballController.direction.y)));
             }
         }
 
-        if (power == Power.Portal)
+        if (powerContainer.power == Power.Portal)
         {
             Instantiate(portal, new Vector2(transform.position.x + (IsOnLeftSide() ? portalSpawnDistance : -portalSpawnDistance), transform.position.y), Quaternion.identity);
         }
 
-        if (power == Power.Shock)
+        if (powerContainer.power == Power.Shock)
         {
             GameObject newProjectile = Instantiate(shockProjectile, (Vector2)transform.position + (IsOnLeftSide() ? Vector2.right : Vector2.left), Quaternion.identity);
-            
+
             if (newProjectile != null && newProjectile.TryGetComponent<ShockProjectileController>(out ShockProjectileController projController))
             {
                 projController.direction = IsOnLeftSide() ? Vector2.right : Vector2.left;
@@ -109,7 +151,7 @@ public class PlayerPowerController : MonoBehaviour
             }
         }
 
-        if (power == Power.Double)
+        if (powerContainer.power == Power.Double)
         {
             GameManagerController gm = FindFirstObjectByType<GameManagerController>();
             BallController ballController = FindFirstObjectByType<BallController>();
@@ -117,7 +159,8 @@ public class PlayerPowerController : MonoBehaviour
             if (ballController == null || ballController.isOutside)
             {
                 cancelPowerLoss = true;
-            } else
+            }
+            else
             {
                 mainSource.PlayOneShot(doubleSound);
                 gm?.ApplyDoublePointsForSeconds(doubleTime);
@@ -125,7 +168,7 @@ public class PlayerPowerController : MonoBehaviour
             }
         }
 
-        if (power == Power.Invisibility)
+        if (powerContainer.power == Power.Invisibility)
         {
             BallController ballController = FindFirstObjectByType<BallController>();
 
@@ -141,7 +184,7 @@ public class PlayerPowerController : MonoBehaviour
             }
         }
 
-        if (power == Power.Telekinesis)
+        if (powerContainer.power == Power.Telekinesis)
         {
             BallController ballController = FindFirstObjectByType<BallController>();
 
@@ -155,9 +198,25 @@ public class PlayerPowerController : MonoBehaviour
                 GameObject signal = Instantiate(telekinesisSignalVFX, transform);
                 signal.transform.localPosition = new Vector2(-Mathf.Sign(transform.position.x) * 1.0f, 0.0f);
                 signal.transform.localScale = new Vector3(-Mathf.Sign(transform.position.x), 1.0f, 1.0f);
-                TelekinesisOverlay vfxComponent = vfx.GetComponent< TelekinesisOverlay>();
+                TelekinesisOverlay vfxComponent = vfx.GetComponent<TelekinesisOverlay>();
                 ballController.TelekinesisBind(transform, vfxComponent, signal);
                 mainSource.PlayOneShot(telekinesisSound);
+            }
+        }
+
+        if (powerContainer.power == Power.Soul)
+        {
+
+            GameObject newProjectile = Instantiate(movingSoulVFX, (Vector2)transform.position + (IsOnLeftSide() ? Vector2.right : Vector2.left), Quaternion.identity);
+
+            if (newProjectile != null && newProjectile.TryGetComponent<SoulProjectileController>(out SoulProjectileController projController))
+            {
+                projController.direction = IsOnLeftSide() ? Vector2.right : Vector2.left;
+                projController.transform.localScale = new Vector2(IsOnLeftSide() ? 1.0f : -1.0f, projController.transform.localScale.y);
+                projController.soulGotPower += OnSoulCollision;
+                mainSource.PlayOneShot(soulSound);
+                projController.SetOwnerController(this);
+                soulDeployed = true;
             }
         }
 
@@ -167,8 +226,6 @@ public class PlayerPowerController : MonoBehaviour
             return;
         }
 
-        hasPower = false;
-        powerSprite.sprite = null;
-
+        if (resetPower) powerContainer.ResetPower();
     }
 }

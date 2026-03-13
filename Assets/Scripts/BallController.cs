@@ -308,7 +308,7 @@ public class BallController : MonoBehaviour
     {
         isOnTelekinesis = true;
 
-        float telekinesisStrength = speed;
+        float telekinesisStrength = speed / 4f;
         float telekinesisTime = 2.0f;
 
         float t = 0.0f;

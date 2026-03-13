@@ -95,7 +95,7 @@ public class PowerBoxGenerator : MonoBehaviour
         PowerBoxController boxController = newBox.GetComponent<PowerBoxController>();
         if (boxController != null)
         {
-            boxController.SetPower(GetRandomPowerFromAvailable());
+            boxController.container.SetPower(GetRandomPowerFromAvailable());
             boxController.SetBoxListReference(boxList);
         }
         boxList.Add(newBox);
