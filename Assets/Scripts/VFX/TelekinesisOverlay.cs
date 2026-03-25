@@ -5,7 +5,6 @@ public class TelekinesisOverlay : MonoBehaviour
 {
     [SerializeField] SpriteRenderer smallOverlayRenderer;
     [SerializeField] SpriteRenderer bigOverlayRenderer;
-    [SerializeField] SpriteRenderer overlayRenderer;
 
     [SerializeField] float appearTime = 0.7f;
 

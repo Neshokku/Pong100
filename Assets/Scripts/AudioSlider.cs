@@ -7,7 +7,6 @@ public class AudioSlider : MonoBehaviour
     private Slider slider;
     private bool initialized = false;
 
-
     [Header("Config")]
     [SerializeField] private string audioGroup;
 

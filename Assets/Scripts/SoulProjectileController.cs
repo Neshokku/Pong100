@@ -93,5 +93,6 @@ public class SoulProjectileController : ProjectileController
         powerContainer.lockPower = false;
         PowerBoxController powerBoxController = powerContainer.GetComponent<PowerBoxController>();
         if (powerBoxController != null) powerBoxController.Dissapear();
+        Destroy(gameObject);
     }
 }

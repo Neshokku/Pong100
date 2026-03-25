@@ -19,7 +19,7 @@ public class PowerContainer : MonoBehaviour
     public void ResetPower()
     {
         hasPower = false;
-        powerSprite.sprite = null;
+        powerSprite.sprite = null;  
     }
 
     public void ResetSpriteOnly()
