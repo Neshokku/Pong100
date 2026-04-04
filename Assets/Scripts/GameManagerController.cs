@@ -153,7 +153,8 @@ public class GameManagerController : MonoBehaviour
     {
         paused = pause;
         mobileControls.SetActive(!pause);
-        allUI.SetActive(!pause);
+        CanvasGroup uiCanvasGroup = allUI.GetComponent<CanvasGroup>();
+        uiCanvasGroup!.alpha = pause ? 0.0f : 1.0f;
         pauseMenu.SetActive(pause);
         Time.timeScale = pause ? 0.0f : 1.0f;
     }
