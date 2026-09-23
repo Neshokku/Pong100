@@ -28,6 +28,7 @@ public class BallController : MonoBehaviour
     public Vector2 direction { get; private set; }
     public bool isOutside { get; private set; } = false;
     private int intangibleStacks = 0;
+    private int lastOut = 0;
 
     public bool isOnTelekinesis { get; private set; } = false;
 
@@ -66,7 +67,8 @@ public class BallController : MonoBehaviour
     // randomizes the direction of the ball
     private void RandomizeDirection()
     {
-        float horizontalDir = Random.value < 0.5f ? -1f : 1f;
+        if (lastOut == 0) lastOut = Random.value > 0.5 ? 1 : -1;
+        float horizontalDir = -lastOut;
 
         float angle = Random.Range(-45f, 45f);
 
@@ -84,6 +86,7 @@ public class BallController : MonoBehaviour
             isOutside = true;
             gm?.AddScoreToPlayer1(1);
             gm?.ResetDoublePoints();
+            lastOut = 1;
             audioSource.PlayOneShot(pointSound, 2.0f);
             ResetInvisibility();
             Invoke(nameof(ResetBall), 1.2f);
@@ -94,6 +97,7 @@ public class BallController : MonoBehaviour
             isOutside = true;
             gm?.AddScoreToPlayer2(1);
             gm?.ResetDoublePoints();
+            lastOut = -1;
             audioSource.PlayOneShot(pointSound, 2.0f);
             ResetInvisibility();
             Invoke(nameof(ResetBall), 1.2f);
